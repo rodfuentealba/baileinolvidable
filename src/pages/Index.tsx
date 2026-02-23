@@ -1,3 +1,4 @@
+import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/sections/HeroSection";
 import ProgramSection from "@/components/sections/ProgramSection";
 import CounterSection from "@/components/sections/CounterSection";
@@ -10,6 +11,7 @@ import FooterSection from "@/components/sections/FooterSection";
 const Index = () => {
   return (
     <main className="min-h-screen overflow-x-hidden">
+      <Navbar />
       <HeroSection />
       <ProgramSection />
       <CounterSection />

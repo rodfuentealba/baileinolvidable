@@ -22,7 +22,7 @@ const HeroSection = () => {
       </div>
 
       {/* Description overlay */}
-      <div className="bg-sand py-12 md:py-16 text-center px-6">
+      <div className="bg-navbar-scroll py-12 md:py-16 text-center px-6">
         <p className="font-display text-2xl md:text-3xl text-muted-foreground mb-2">
           Casa Galzi en Galzignano Terme
         </p>

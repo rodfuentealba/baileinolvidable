@@ -19,7 +19,7 @@ const WeatherCard = ({ temp, label, condition, variant = "teal" }: { temp: numbe
     <div className={`${bgClass} rounded-xl p-6`}>
       <p className="text-sm opacity-80 font-body">Galzignano, Italia</p>
       <div className="flex items-center justify-between mt-2">
-        <span className="font-display text-5xl">{temp}°</span>
+        <span className="font-body font-black text-5xl">{temp}°</span>
         <Icon className="w-10 h-10 opacity-70" />
       </div>
       <p className="text-sm mt-2 opacity-80 font-body">{label}</p>

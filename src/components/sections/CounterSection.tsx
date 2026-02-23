@@ -41,7 +41,7 @@ const CounterSection = () => {
         <div className="stagger-children visible grid grid-cols-3 gap-6">
           {items.map((item, i) => (
             <div key={i} className="text-center">
-              <span className="font-display text-5xl md:text-6xl text-foreground block">
+              <span className="font-body text-5xl md:text-6xl text-foreground block font-black italic">
                 {item.value}
               </span>
               <span className="font-display text-xl text-muted-foreground">

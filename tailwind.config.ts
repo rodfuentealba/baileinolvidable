@@ -67,6 +67,7 @@ export default {
         "services-bg": "hsl(var(--services-bg))",
         "destination-red": "hsl(var(--destination-red))",
         "footer-red": "hsl(var(--footer-red))",
+        "navbar-scroll": "hsl(var(--navbar-scroll))",
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",

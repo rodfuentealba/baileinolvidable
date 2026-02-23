@@ -9,7 +9,7 @@ const ServicesSection = () => {
       <div ref={ref} className="fade-section max-w-4xl mx-auto">
         {/* Accommodation cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-          <div className="bg-background/60 backdrop-blur rounded-xl p-6 border border-border">
+          <div className="rounded-xl p-6 border border-border">
             <Tent className="w-8 h-8 text-primary mb-3" />
             <h3 className="font-serif-custom text-xl text-foreground mb-2">Con carpa</h3>
             <p className="text-sm text-muted-foreground font-body">
@@ -19,7 +19,7 @@ const ServicesSection = () => {
               Avísanos para reservarte un espacio.
             </p>
           </div>
-          <div className="bg-background/60 backdrop-blur rounded-xl p-6 border border-coral/30">
+          <div className="rounded-xl p-6 border border-coral/30">
             <AlertTriangle className="w-8 h-8 text-coral mb-3" />
             <h3 className="font-serif-custom text-xl text-coral mb-2">Si no tienes</h3>
             <p className="text-sm text-muted-foreground font-body">
