@@ -31,7 +31,7 @@ const DresscodeSection = () => {
   const ref = useFadeInOnScroll();
 
   return (
-    <section className="bg-dresscode-bg py-16 px-6">
+    <section className="py-16 px-6" style={{ backgroundColor: "#1d2030" }}>
       <div ref={ref} className="fade-section max-w-4xl mx-auto">
         <div className="flex flex-col items-center mb-10">
           <h2 className="font-display text-3xl md:text-4xl text-gold">Dresscode</h2>
