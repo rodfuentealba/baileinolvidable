@@ -35,22 +35,8 @@ const DresscodeSection = () => {
 
         {/* Weather cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="bg-teal rounded-xl p-6 text-hero-navy-foreground">
-            <p className="text-sm opacity-80 font-body">Galzignano, Italia</p>
-            <div className="flex items-center justify-between mt-2">
-              <span className="font-display text-5xl">8°</span>
-              <Sun className="w-10 h-10 opacity-70" />
-            </div>
-            <p className="text-sm mt-2 opacity-80 font-body">Temperatura Actual</p>
-          </div>
-          <div className="bg-gold rounded-xl p-6 text-foreground">
-            <p className="text-sm opacity-80 font-body">Galzignano, Italia</p>
-            <div className="flex items-center justify-between mt-2">
-              <span className="font-display text-5xl">16°</span>
-              <Sun className="w-10 h-10 opacity-70" />
-            </div>
-            <p className="text-sm mt-2 opacity-80 font-body">Temperatura Pronosticada</p>
-          </div>
+          <WeatherCard temp={8} label="Temperatura Actual" condition="cloudy" />
+          <WeatherCard temp={16} label="Temperatura Pronosticada" condition="sunny" variant="gold" />
         </div>
       </div>
     </section>
