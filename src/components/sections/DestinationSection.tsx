@@ -47,9 +47,12 @@ const DestinationSection = () => {
       <div ref={ref} className="fade-section max-w-4xl mx-auto">
         <div className="stagger-children visible grid grid-cols-1 md:grid-cols-2 gap-6">
           {destinations.map((d, i) => (
-            <div
+            <a
               key={i}
-              className="relative overflow-hidden rounded-xl h-64 group"
+              href={d.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="relative overflow-hidden rounded-xl h-64 group block cursor-pointer"
             >
               <img
                 src={d.image}
@@ -71,7 +74,7 @@ const DestinationSection = () => {
                   {d.name}
                 </h3>
               </div>
-            </div>
+            </a>
           ))}
         </div>
       </div>
