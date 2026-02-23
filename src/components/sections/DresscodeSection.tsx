@@ -1,5 +1,31 @@
 import { useFadeInOnScroll } from "@/hooks/useScrollAnimations";
-import { TreePine, Sun, Moon } from "lucide-react";
+import { TreePine, Sun, Cloud, CloudRain, CloudSnow, CloudLightning, CloudDrizzle, Snowflake } from "lucide-react";
+
+type WeatherCondition = "sunny" | "cloudy" | "rainy" | "snowy" | "stormy" | "drizzle";
+
+const weatherIcons: Record<WeatherCondition, React.ComponentType<{ className?: string }>> = {
+  sunny: Sun,
+  cloudy: Cloud,
+  rainy: CloudRain,
+  snowy: CloudSnow,
+  stormy: CloudLightning,
+  drizzle: CloudDrizzle,
+};
+
+const WeatherCard = ({ temp, label, condition, variant = "teal" }: { temp: number; label: string; condition: WeatherCondition; variant?: "teal" | "gold" }) => {
+  const Icon = weatherIcons[condition] || Sun;
+  const bgClass = variant === "gold" ? "bg-gold text-foreground" : "bg-teal text-hero-navy-foreground";
+  return (
+    <div className={`${bgClass} rounded-xl p-6`}>
+      <p className="text-sm opacity-80 font-body">Galzignano, Italia</p>
+      <div className="flex items-center justify-between mt-2">
+        <span className="font-display text-5xl">{temp}°</span>
+        <Icon className="w-10 h-10 opacity-70" />
+      </div>
+      <p className="text-sm mt-2 opacity-80 font-body">{label}</p>
+    </div>
+  );
+};
 
 const DresscodeSection = () => {
   const ref = useFadeInOnScroll();
@@ -7,9 +33,7 @@ const DresscodeSection = () => {
   return (
     <section className="bg-dresscode-bg py-16 px-6">
       <div ref={ref} className="fade-section max-w-4xl mx-auto">
-        {/* Moon icon + title */}
         <div className="flex flex-col items-center mb-10">
-          <Moon className="w-10 h-10 text-gold mb-3" />
           <h2 className="font-display text-3xl md:text-4xl text-gold">Dresscode</h2>
         </div>
 
@@ -37,22 +61,8 @@ const DresscodeSection = () => {
 
         {/* Weather cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="bg-teal rounded-xl p-6 text-hero-navy-foreground">
-            <p className="text-sm opacity-80 font-body">Galzignano, Italia</p>
-            <div className="flex items-center justify-between mt-2">
-              <span className="font-display text-5xl">8°</span>
-              <Sun className="w-10 h-10 opacity-70" />
-            </div>
-            <p className="text-sm mt-2 opacity-80 font-body">Temperatura Actual</p>
-          </div>
-          <div className="bg-gold rounded-xl p-6 text-foreground">
-            <p className="text-sm opacity-80 font-body">Galzignano, Italia</p>
-            <div className="flex items-center justify-between mt-2">
-              <span className="font-display text-5xl">16°</span>
-              <Sun className="w-10 h-10 opacity-70" />
-            </div>
-            <p className="text-sm mt-2 opacity-80 font-body">Temperatura Pronosticada</p>
-          </div>
+          <WeatherCard temp={8} label="Temperatura Actual" condition="cloudy" />
+          <WeatherCard temp={16} label="Temperatura Pronosticada" condition="sunny" variant="gold" />
         </div>
       </div>
     </section>

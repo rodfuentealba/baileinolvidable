@@ -11,7 +11,7 @@ function calcTimeLeft() {
     meses: Math.floor(diff / (1000 * 60 * 60 * 24 * 30)),
     semanas: Math.floor(diff / (1000 * 60 * 60 * 24 * 7)),
     horas: Math.floor(diff / (1000 * 60 * 60)),
-    segundos: Math.floor(diff / 1000),
+    
   };
 }
 
@@ -28,7 +28,6 @@ const CounterSection = () => {
     { value: time.meses, label: "Meses" },
     { value: time.semanas, label: "Semanas" },
     { value: time.horas, label: "Horas" },
-    { value: time.segundos, label: "Segundos" },
   ];
 
   return (
@@ -39,7 +38,7 @@ const CounterSection = () => {
           alt="Baile Inolvidable"
           className="mx-auto w-full max-w-2xl mb-10"
         />
-        <div className="stagger-children visible grid grid-cols-2 md:grid-cols-4 gap-6">
+        <div className="stagger-children visible grid grid-cols-3 gap-6">
           {items.map((item, i) => (
             <div key={i} className="text-center">
               <span className="font-display text-5xl md:text-6xl text-foreground block">
