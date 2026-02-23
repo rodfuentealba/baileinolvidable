@@ -28,7 +28,6 @@ const CounterSection = () => {
     { value: time.meses, label: "Meses" },
     { value: time.semanas, label: "Semanas" },
     { value: time.horas, label: "Horas" },
-    { value: time.segundos, label: "Segundos" },
   ];
 
   return (
