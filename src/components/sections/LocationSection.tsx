@@ -5,7 +5,7 @@ const LocationSection = () => {
   const ref = useFadeInOnScroll();
 
   return (
-    <section className="relative w-full">
+    <section className="relative w-full bg-peach">
       <div
         ref={ref}
         className="fade-section relative w-full h-[400px] md:h-[500px] bg-cover bg-center flex items-end justify-center"

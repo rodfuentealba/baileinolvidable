@@ -11,7 +11,7 @@ function calcTimeLeft() {
     meses: Math.floor(diff / (1000 * 60 * 60 * 24 * 30)),
     semanas: Math.floor(diff / (1000 * 60 * 60 * 24 * 7)),
     horas: Math.floor(diff / (1000 * 60 * 60)),
-    segundos: Math.floor(diff / 1000),
+    
   };
 }
 

@@ -7,9 +7,7 @@ const DresscodeSection = () => {
   return (
     <section className="bg-dresscode-bg py-16 px-6">
       <div ref={ref} className="fade-section max-w-4xl mx-auto">
-        {/* Moon icon + title */}
         <div className="flex flex-col items-center mb-10">
-          <Moon className="w-10 h-10 text-gold mb-3" />
           <h2 className="font-display text-3xl md:text-4xl text-gold">Dresscode</h2>
         </div>
 
