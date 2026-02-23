@@ -39,7 +39,7 @@ const DresscodeSection = () => {
 
         {/* Tips cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-          <div className="bg-hero-navy-foreground/10 backdrop-blur rounded-xl p-6 border border-hero-navy-foreground/10">
+          <div className="rounded-xl p-6 border border-hero-navy-foreground/20">
             <TreePine className="w-8 h-8 text-teal-light mb-3" />
             <h3 className="font-serif-custom text-xl text-teal-light mb-2">
               Medio de la naturaleza
@@ -48,7 +48,7 @@ const DresscodeSection = () => {
               Toda la fiesta será sobre el pasto, por eso recomendamos no usar zapatos con taco o ropa delicada que pueda dañarse.
             </p>
           </div>
-          <div className="bg-hero-navy-foreground/10 backdrop-blur rounded-xl p-6 border border-hero-navy-foreground/10">
+          <div className="rounded-xl p-6 border border-hero-navy-foreground/20">
             <Sun className="w-8 h-8 text-gold mb-3" />
             <h3 className="font-serif-custom text-xl text-gold mb-2">
               Siempre al aire libre
