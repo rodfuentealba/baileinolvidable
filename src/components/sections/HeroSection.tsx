@@ -1,5 +1,4 @@
 import bgHero from "@/assets/bgHero.png";
-import titleDB from "@/assets/titleDB.svg";
 import { useFadeInOnScroll } from "@/hooks/useScrollAnimations";
 
 const HeroSection = () => {
@@ -7,10 +6,8 @@ const HeroSection = () => {
 
   return (
     <section className="relative w-full overflow-hidden bg-hero-navy">
-      {/* Title bar */}
-      <div className="relative z-10 flex items-center justify-center pt-6 pb-2">
-        <img src={titleDB} alt="Damiam & Benedetta" className="h-6 md:h-8" />
-      </div>
+      {/* Spacer for fixed navbar */}
+      <div className="h-14 md:h-16" />
 
       {/* Hero illustration */}
       <div ref={ref} className="fade-section relative w-full">
