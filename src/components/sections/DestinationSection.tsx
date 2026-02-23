@@ -11,6 +11,7 @@ const destinations = [
     distance: "50 KM",
     flightCost: "30-40 USD",
     tag: "🚣 Paseos en góndola",
+    link: "https://www.tripadvisor.com/Tourism-g187870-Venice_Veneto-Vacations.html",
   },
   {
     name: "Napoli",
@@ -18,6 +19,7 @@ const destinations = [
     distance: "500 KM",
     flightCost: "30-40 USD",
     tag: "⚽ Fútbol & Pizza",
+    link: "https://www.tripadvisor.com/Tourism-g187785-Naples_Province_of_Naples_Campania-Vacations.html",
   },
   {
     name: "Dolomiti",
@@ -25,6 +27,7 @@ const destinations = [
     distance: "150 KM",
     flightCost: "20-30 USD",
     tag: "🧗 Escalada & Trekking",
+    link: "https://www.tripadvisor.com/Tourism-g187849-Dolomites_Trentino_Alto_Adige-Vacations.html",
   },
   {
     name: "Bologna",
@@ -32,6 +35,7 @@ const destinations = [
     distance: "120 KM",
     flightCost: "15-25 USD",
     tag: "🍝 Gastronomía",
+    link: "https://www.tripadvisor.com/Tourism-g187801-Bologna_Province_of_Bologna_Emilia_Romagna-Vacations.html",
   },
 ];
 
