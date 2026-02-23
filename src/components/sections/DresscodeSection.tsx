@@ -1,6 +1,32 @@
 import { useFadeInOnScroll } from "@/hooks/useScrollAnimations";
 import { TreePine, Sun, Cloud, CloudRain, CloudSnow, CloudLightning, CloudDrizzle, Snowflake } from "lucide-react";
 
+type WeatherCondition = "sunny" | "cloudy" | "rainy" | "snowy" | "stormy" | "drizzle";
+
+const weatherIcons: Record<WeatherCondition, React.ComponentType<{ className?: string }>> = {
+  sunny: Sun,
+  cloudy: Cloud,
+  rainy: CloudRain,
+  snowy: CloudSnow,
+  stormy: CloudLightning,
+  drizzle: CloudDrizzle,
+};
+
+const WeatherCard = ({ temp, label, condition, variant = "teal" }: { temp: number; label: string; condition: WeatherCondition; variant?: "teal" | "gold" }) => {
+  const Icon = weatherIcons[condition] || Sun;
+  const bgClass = variant === "gold" ? "bg-gold text-foreground" : "bg-teal text-hero-navy-foreground";
+  return (
+    <div className={`${bgClass} rounded-xl p-6`}>
+      <p className="text-sm opacity-80 font-body">Galzignano, Italia</p>
+      <div className="flex items-center justify-between mt-2">
+        <span className="font-display text-5xl">{temp}°</span>
+        <Icon className="w-10 h-10 opacity-70" />
+      </div>
+      <p className="text-sm mt-2 opacity-80 font-body">{label}</p>
+    </div>
+  );
+};
+
 const DresscodeSection = () => {
   const ref = useFadeInOnScroll();
 
