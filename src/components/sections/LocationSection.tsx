@@ -5,10 +5,10 @@ const LocationSection = () => {
   const ref = useFadeInOnScroll();
 
   return (
-    <section className="relative w-full bg-peach">
+    <section className="relative w-full bg-peach -mt-16 z-10">
       <div
         ref={ref}
-        className="fade-section relative w-full h-[400px] md:h-[500px] bg-cover bg-center flex items-end justify-center"
+        className="fade-section relative w-full h-[400px] md:h-[500px] bg-cover bg-center flex items-end justify-center rounded-t-3xl overflow-hidden"
         style={{ backgroundImage: `url(${bgLocation})` }}
       >
         <div className="absolute inset-0 bg-gradient-to-t from-location-dark/90 to-transparent" />

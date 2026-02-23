@@ -45,6 +45,9 @@ const DestinationSection = () => {
   return (
     <section className="bg-services-bg py-16 px-6">
       <div ref={ref} className="fade-section max-w-4xl mx-auto">
+        <h2 className="font-serif-custom text-3xl md:text-4xl text-center text-foreground mb-10">
+          Destinos Cercanos
+        </h2>
         <div className="stagger-children visible grid grid-cols-1 md:grid-cols-2 gap-6">
           {destinations.map((d, i) => (
             <a
