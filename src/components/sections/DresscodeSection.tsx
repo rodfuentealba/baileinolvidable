@@ -1,5 +1,5 @@
 import { useFadeInOnScroll } from "@/hooks/useScrollAnimations";
-import { TreePine, Sun, Moon } from "lucide-react";
+import { TreePine, Sun, Cloud, CloudRain, CloudSnow, CloudLightning, CloudDrizzle, Snowflake } from "lucide-react";
 
 const DresscodeSection = () => {
   const ref = useFadeInOnScroll();
