@@ -6,8 +6,6 @@ const HeroSection = () => {
 
   return (
     <section className="relative w-full overflow-hidden bg-hero-navy">
-      {/* Spacer for fixed navbar */}
-      <div className="h-14 md:h-16" />
 
       {/* Hero illustration */}
       <div ref={ref} className="fade-section relative w-full">
