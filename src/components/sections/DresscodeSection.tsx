@@ -1,5 +1,7 @@
 import { useFadeInOnScroll } from "@/hooks/useScrollAnimations";
-import { TreePine, Sun, Cloud, CloudRain, CloudSnow, CloudLightning, CloudDrizzle, Snowflake } from "lucide-react";
+import { TreePine, Sun, Cloud, CloudRain, CloudSnow, CloudLightning, CloudDrizzle } from "lucide-react";
+import { useEffect, useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
 
 type WeatherCondition = "sunny" | "cloudy" | "rainy" | "snowy" | "stormy" | "drizzle";
 
@@ -12,15 +14,21 @@ const weatherIcons: Record<WeatherCondition, React.ComponentType<{ className?: s
   drizzle: CloudDrizzle,
 };
 
-const WeatherCard = ({ temp, label, condition, variant = "teal" }: { temp: number; label: string; condition: WeatherCondition; variant?: "teal" | "gold" }) => {
+const WeatherCard = ({ temp, label, condition, variant = "teal", loading }: { temp: number; label: string; condition: WeatherCondition; variant?: "teal" | "gold"; loading?: boolean }) => {
   const Icon = weatherIcons[condition] || Sun;
   const bgClass = variant === "gold" ? "bg-gold text-foreground" : "bg-teal text-hero-navy-foreground";
   return (
     <div className={`${bgClass} rounded-xl p-6`}>
-      <p className="text-sm opacity-80 font-body">Galzignano, Italia</p>
+      <p className="text-sm opacity-80 font-body">Galzignano Terme, Italia</p>
       <div className="flex items-center justify-between mt-2">
-        <span className="font-body font-black text-6xl">{temp}°</span>
-        <Icon className="w-12 h-12 opacity-70 animate-pulse" />
+        <span className="font-body font-black text-7xl">
+          {loading ? "—" : `${temp}°`}
+        </span>
+        <div className="relative">
+          <Icon className="w-12 h-12 opacity-70 animate-pulse" />
+          <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full animate-ping" />
+          <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full" />
+        </div>
       </div>
       <p className="text-sm mt-2 opacity-80 font-body">{label}</p>
     </div>
@@ -29,6 +37,36 @@ const WeatherCard = ({ temp, label, condition, variant = "teal" }: { temp: numbe
 
 const DresscodeSection = () => {
   const ref = useFadeInOnScroll();
+  const [weather, setWeather] = useState<{
+    current: { temp: number; condition: WeatherCondition };
+    forecast: { temp: number; condition: WeatherCondition };
+  } | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchWeather = async () => {
+      try {
+        const { data, error } = await supabase.functions.invoke('get-weather');
+        if (!error && data) {
+          setWeather(data);
+        }
+      } catch (e) {
+        console.error('Error fetching weather:', e);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchWeather();
+    // Refresh every 15 minutes
+    const interval = setInterval(fetchWeather, 15 * 60 * 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const currentTemp = weather?.current.temp ?? 0;
+  const currentCondition = weather?.current.condition ?? "cloudy";
+  const forecastTemp = weather?.forecast.temp ?? 0;
+  const forecastCondition = weather?.forecast.condition ?? "sunny";
 
   return (
     <section className="py-16 px-6 bg-black">
@@ -61,8 +99,19 @@ const DresscodeSection = () => {
 
         {/* Weather cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <WeatherCard temp={8} label="Temperatura Actual" condition="cloudy" />
-          <WeatherCard temp={16} label="Temperatura Pronosticada" condition="sunny" variant="gold" />
+          <WeatherCard
+            temp={currentTemp}
+            label="Temperatura Actual"
+            condition={currentCondition as WeatherCondition}
+            loading={loading}
+          />
+          <WeatherCard
+            temp={forecastTemp}
+            label="Temperatura Pronosticada"
+            condition={forecastCondition as WeatherCondition}
+            variant="gold"
+            loading={loading}
+          />
         </div>
       </div>
     </section>
