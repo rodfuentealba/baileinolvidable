@@ -19,8 +19,8 @@ const WeatherCard = ({ temp, label, condition, variant = "teal" }: { temp: numbe
     <div className={`${bgClass} rounded-xl p-6`}>
       <p className="text-sm opacity-80 font-body">Galzignano, Italia</p>
       <div className="flex items-center justify-between mt-2">
-        <span className="font-body font-black text-5xl">{temp}°</span>
-        <Icon className="w-10 h-10 opacity-70" />
+        <span className="font-body font-black text-6xl">{temp}°</span>
+        <Icon className="w-12 h-12 opacity-70 animate-pulse" />
       </div>
       <p className="text-sm mt-2 opacity-80 font-body">{label}</p>
     </div>
@@ -41,7 +41,7 @@ const DresscodeSection = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
           <div className="rounded-xl p-6 border border-hero-navy-foreground/20">
             <TreePine className="w-8 h-8 text-teal-light mb-3" />
-            <h3 className="font-serif-custom text-xl text-teal-light mb-2">
+            <h3 className="font-serif-custom text-2xl text-teal-light mb-2">
               Medio de la naturaleza
             </h3>
             <p className="text-hero-navy-foreground/70 text-sm font-body">
@@ -50,7 +50,7 @@ const DresscodeSection = () => {
           </div>
           <div className="rounded-xl p-6 border border-hero-navy-foreground/20">
             <Sun className="w-8 h-8 text-gold mb-3" />
-            <h3 className="font-serif-custom text-xl text-gold mb-2">
+            <h3 className="font-serif-custom text-2xl text-gold mb-2">
               Siempre al aire libre
             </h3>
             <p className="text-hero-navy-foreground/70 text-sm font-body">
