@@ -44,7 +44,7 @@ const ServicesSection = () => {
               className="rounded-xl p-6 border border-primary/40 flex flex-col items-center text-center"
             >
               <item.icon className="w-8 h-8 text-primary mb-3" />
-              <span className="text-sm text-foreground font-body">{item.label}</span>
+              <span className="font-serif-custom text-lg text-foreground">{item.label}</span>
             </div>
           ))}
         </div>
