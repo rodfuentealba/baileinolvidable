@@ -41,7 +41,7 @@ const ServicesSection = () => {
           ].map((item, i) => (
             <div
               key={i}
-              className="rounded-xl p-6 border border-primary/40 flex flex-col items-center text-center"
+              className="rounded-xl p-6 border border-primary/40 flex flex-col items-start"
             >
               <item.icon className="w-8 h-8 text-primary mb-3" />
               <span className="font-serif-custom text-xl text-foreground">{item.label}</span>
