@@ -11,7 +11,7 @@ const LocationSection = () => {
         className="fade-section relative w-full h-[400px] md:h-[500px] bg-cover bg-center flex items-end justify-center rounded-t-3xl overflow-hidden"
         style={{ backgroundImage: `url(${bgLocation})` }}
       >
-        <div className="absolute inset-0 bg-gradient-to-t from-location-dark/90 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent" />
         <div className="relative z-10 text-center pb-12 px-6">
           <p className="font-display text-xl md:text-2xl text-hero-navy-foreground/80 mb-2">
             La fiesta se realizará en el jardín de
