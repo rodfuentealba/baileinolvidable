@@ -7,9 +7,13 @@ const ServicesSection = () => {
   return (
     <section className="bg-services-bg py-16 px-6">
       <div ref={ref} className="fade-section max-w-4xl mx-auto">
+        <div className="flex flex-col items-center mb-10">
+          <h2 className="font-display text-3xl md:text-4xl text-primary">Servicios</h2>
+        </div>
+
         {/* Accommodation cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-          <div className="rounded-xl p-6 border border-border">
+          <div className="rounded-xl p-6 border border-primary/40">
             <Tent className="w-8 h-8 text-primary mb-3" />
             <h3 className="font-serif-custom text-xl text-foreground mb-2">Con carpa</h3>
             <p className="text-sm text-muted-foreground font-body">
@@ -28,18 +32,18 @@ const ServicesSection = () => {
           </div>
         </div>
 
-        {/* Facility badges */}
-        <div className="stagger-children visible flex flex-wrap justify-center gap-4">
+        {/* Facility cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {[
             { icon: Bath, label: "Baño Seco" },
             { icon: ShowerHead, label: "Duchas Exteriores" },
-            { icon: Home, label: "No ingresar al interior de la casa." },
+            { icon: Home, label: "No ingresar al interior de la casa" },
           ].map((item, i) => (
             <div
               key={i}
-              className="flex items-center gap-2 bg-background/70 border border-border rounded-full px-5 py-3"
+              className="rounded-xl p-6 border border-primary/40 flex flex-col items-center text-center"
             >
-              <item.icon className="w-5 h-5 text-muted-foreground" />
+              <item.icon className="w-8 h-8 text-primary mb-3" />
               <span className="text-sm text-foreground font-body">{item.label}</span>
             </div>
           ))}
