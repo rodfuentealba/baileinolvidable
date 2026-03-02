@@ -69,14 +69,14 @@ const CounterSection = () => {
       {/* Parallax palmeras */}
       <div
         ref={palmerLeftRef}
-        className="absolute left-0 bottom-0 w-[18%] md:w-[12%] pointer-events-none parallax-float z-0"
+        className="absolute left-0 bottom-0 w-[45%] md:w-[30%] pointer-events-none parallax-float z-0"
         style={{ transform: `translateY(${palmerLeftOffset}px)` }}
       >
         <img src={palmerLeft} alt="Palmera izquierda" className="w-full h-full object-contain" />
       </div>
       <div
         ref={palmerRightRef}
-        className="absolute right-0 bottom-0 w-[16%] md:w-[11%] pointer-events-none parallax-float z-0"
+        className="absolute right-0 bottom-0 w-[40%] md:w-[28%] pointer-events-none parallax-float z-0"
         style={{ transform: `translateY(${palmerRightOffset}px)` }}
       >
         <img src={palmerRight} alt="Palmera derecha" className="w-full h-full object-contain" />
@@ -86,7 +86,7 @@ const CounterSection = () => {
         <img
           src={letterCenter}
           alt="Baile Inolvidable"
-          className="mx-auto w-full max-w-2xl mb-10"
+          className="mx-auto w-full max-w-xs md:max-w-sm mb-10"
         />
         <div className="stagger-children visible grid grid-cols-3 gap-6">
           {items.map((item, i) => (

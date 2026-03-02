@@ -41,13 +41,13 @@ const HeroSection = () => {
       <ParallaxElement
         src={palmerLeft}
         alt="Palmera izquierda"
-        className="left-0 bottom-[15%] w-[18%] md:w-[14%] z-10"
+        className="left-0 bottom-[15%] w-[45%] md:w-[35%] z-10"
         speed={0.04}
       />
       <ParallaxElement
         src={palmerRight}
         alt="Palmera derecha"
-        className="right-0 bottom-[15%] w-[16%] md:w-[12%] z-10"
+        className="right-0 bottom-[15%] w-[40%] md:w-[30%] z-10"
         speed={0.04}
       />
       <ParallaxElement
