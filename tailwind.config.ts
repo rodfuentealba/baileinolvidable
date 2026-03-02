@@ -68,6 +68,9 @@ export default {
         "destination-red": "hsl(var(--destination-red))",
         "footer-red": "hsl(var(--footer-red))",
         "navbar-scroll": "hsl(var(--navbar-scroll))",
+        "program-bg": "hsl(var(--program-bg))",
+        "program-card": "hsl(var(--program-card))",
+        "counter-bg": "hsl(var(--counter-bg))",
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",
