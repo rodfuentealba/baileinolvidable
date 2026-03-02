@@ -41,13 +41,13 @@ const HeroSection = () => {
       <ParallaxElement
         src={palmerLeft}
         alt="Palmera izquierda"
-        className="left-0 bottom-[15%] w-[45%] md:w-[35%] z-10"
+        className="left-0 bottom-0 w-[36%] md:w-[28%] z-30"
         speed={0.04}
       />
       <ParallaxElement
         src={palmerRight}
         alt="Palmera derecha"
-        className="right-0 bottom-[15%] w-[40%] md:w-[30%] z-10"
+        className="right-0 bottom-0 w-[32%] md:w-[24%] z-30"
         speed={0.04}
       />
       <ParallaxElement
@@ -100,11 +100,11 @@ const HeroSection = () => {
       />
 
       {/* Hero illustration */}
-      <div ref={ref} className="fade-section relative w-full">
+      <div ref={ref} className="fade-section relative w-full h-[700px]">
         <img
           src={bgHero}
           alt="Baile Inolvidable - Fiesta en la playa"
-          className="w-full h-auto"
+          className="w-full h-full object-cover"
         />
       </div>
 
