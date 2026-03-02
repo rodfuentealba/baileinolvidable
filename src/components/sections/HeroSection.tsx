@@ -35,19 +35,19 @@ const HeroSection = () => {
   const ref = useFadeInOnScroll();
 
   return (
-    <section className="relative w-full overflow-hidden bg-hero-navy">
+    <section className="relative w-full bg-hero-navy">
 
       {/* Decorative parallax elements */}
       <ParallaxElement
         src={palmerLeft}
         alt="Palmera izquierda"
-        className="left-0 bottom-0 w-[36%] md:w-[28%] z-30"
+        className="left-0 -bottom-[20%] w-[36%] md:w-[28%] z-[60]"
         speed={0.04}
       />
       <ParallaxElement
         src={palmerRight}
         alt="Palmera derecha"
-        className="right-0 bottom-0 w-[32%] md:w-[24%] z-30"
+        className="right-0 -bottom-[20%] w-[32%] md:w-[24%] z-[60]"
         speed={0.04}
       />
       <ParallaxElement
