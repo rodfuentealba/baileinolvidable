@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from "react";
-import letterCenter from "@/assets/letterCenter.png";
+import letterCenter from "@/assets/letterCenter.svg";
 import palmerLeft from "@/assets/palmerLeft.png";
 import palmerRight from "@/assets/palmerRight.png";
 import { useFadeInOnScroll, useParallax } from "@/hooks/useScrollAnimations";
