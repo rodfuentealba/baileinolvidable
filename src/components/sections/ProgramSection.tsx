@@ -20,7 +20,7 @@ const ProgramSection = () => {
   const ref = useFadeInOnScroll();
 
   return (
-    <section className="bg-sand-light py-16 px-6">
+    <section className="bg-program-bg py-16 px-6">
       <div ref={ref} className="fade-section max-w-4xl mx-auto">
         <h2 className="font-serif-custom text-3xl md:text-4xl text-center text-foreground mb-10">
           Programa
@@ -29,11 +29,11 @@ const ProgramSection = () => {
           {programs.map((p, i) => (
             <div
               key={i}
-              className="bg-muted-foreground/80 rounded-lg p-6 text-primary-foreground"
+              className="bg-program-card rounded-lg p-6 text-white"
             >
-              <Flag className="w-6 h-6 mb-3 text-primary-foreground/80" />
+              <Flag className="w-6 h-6 mb-3 text-white/80" />
               <h3 className="font-display text-2xl mb-2">{p.title}</h3>
-              <p className="text-sm text-primary-foreground/80 font-body">
+              <p className="text-sm text-white/80 font-body">
                 {p.description}
               </p>
             </div>

@@ -1,6 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import letterCenter from "@/assets/letterCenter.png";
-import { useFadeInOnScroll } from "@/hooks/useScrollAnimations";
+import palmerLeft from "@/assets/palmerLeft.png";
+import palmerRight from "@/assets/palmerRight.png";
+import { useFadeInOnScroll, useParallax } from "@/hooks/useScrollAnimations";
 
 const TARGET_DATE = new Date("2026-09-05T18:00:00+02:00").getTime();
 
@@ -11,13 +13,45 @@ function calcTimeLeft() {
     meses: Math.floor(diff / (1000 * 60 * 60 * 24 * 30)),
     semanas: Math.floor(diff / (1000 * 60 * 60 * 24 * 7)),
     horas: Math.floor(diff / (1000 * 60 * 60)),
-    
   };
 }
+
+const FlipDigit = ({ value, label }: { value: number; label: string }) => {
+  const [display, setDisplay] = useState(value);
+  const [flipping, setFlipping] = useState(false);
+  const prevValue = useRef(value);
+
+  useEffect(() => {
+    if (prevValue.current !== value) {
+      setFlipping(true);
+      const timeout = setTimeout(() => {
+        setDisplay(value);
+        setFlipping(false);
+        prevValue.current = value;
+      }, 300);
+      return () => clearTimeout(timeout);
+    }
+  }, [value]);
+
+  return (
+    <div className="text-center">
+      <div className={`transition-transform duration-300 ${flipping ? 'scale-y-0' : 'scale-y-100'}`}>
+        <span className="font-body text-5xl md:text-6xl text-white block font-black italic">
+          {display}
+        </span>
+      </div>
+      <span className="font-display text-xl text-white/80">
+        {label}
+      </span>
+    </div>
+  );
+};
 
 const CounterSection = () => {
   const [time, setTime] = useState(calcTimeLeft);
   const ref = useFadeInOnScroll();
+  const { ref: palmerLeftRef, offset: palmerLeftOffset } = useParallax(0.04);
+  const { ref: palmerRightRef, offset: palmerRightOffset } = useParallax(0.04);
 
   useEffect(() => {
     const id = setInterval(() => setTime(calcTimeLeft()), 1000);
@@ -31,8 +65,24 @@ const CounterSection = () => {
   ];
 
   return (
-    <section className="bg-peach py-16 px-6">
-      <div ref={ref} className="fade-section max-w-4xl mx-auto text-center">
+    <section className="relative bg-counter-bg py-16 px-6 overflow-hidden">
+      {/* Parallax palmeras */}
+      <div
+        ref={palmerLeftRef}
+        className="absolute left-0 bottom-0 w-[18%] md:w-[12%] pointer-events-none parallax-float z-0"
+        style={{ transform: `translateY(${palmerLeftOffset}px)` }}
+      >
+        <img src={palmerLeft} alt="Palmera izquierda" className="w-full h-full object-contain" />
+      </div>
+      <div
+        ref={palmerRightRef}
+        className="absolute right-0 bottom-0 w-[16%] md:w-[11%] pointer-events-none parallax-float z-0"
+        style={{ transform: `translateY(${palmerRightOffset}px)` }}
+      >
+        <img src={palmerRight} alt="Palmera derecha" className="w-full h-full object-contain" />
+      </div>
+
+      <div ref={ref} className="fade-section max-w-4xl mx-auto text-center relative z-10">
         <img
           src={letterCenter}
           alt="Baile Inolvidable"
@@ -40,14 +90,7 @@ const CounterSection = () => {
         />
         <div className="stagger-children visible grid grid-cols-3 gap-6">
           {items.map((item, i) => (
-            <div key={i} className="text-center">
-              <span className="font-body text-5xl md:text-6xl text-foreground block font-black italic">
-                {item.value}
-              </span>
-              <span className="font-display text-xl text-muted-foreground">
-                {item.label}
-              </span>
-            </div>
+            <FlipDigit key={i} value={item.value} label={item.label} />
           ))}
         </div>
       </div>
