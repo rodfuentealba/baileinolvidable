@@ -43,7 +43,7 @@ const DestinationSection = () => {
   const ref = useFadeInOnScroll();
 
   return (
-    <section className="bg-services-bg py-16 px-6">
+    <section className="bg-program-bg py-16 px-6">
       <div ref={ref} className="fade-section max-w-4xl mx-auto">
         <h2 className="font-serif-custom text-3xl md:text-4xl text-center text-foreground mb-10">
           Destinos Cercanos

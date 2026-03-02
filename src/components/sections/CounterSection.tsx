@@ -69,14 +69,14 @@ const CounterSection = () => {
       {/* Parallax palmeras */}
       <div
         ref={palmerLeftRef}
-        className="absolute left-0 bottom-0 w-[45%] md:w-[30%] pointer-events-none parallax-float z-0"
+        className="absolute left-0 bottom-0 w-[36%] md:w-[24%] pointer-events-none parallax-float z-0"
         style={{ transform: `translateY(${palmerLeftOffset}px)` }}
       >
         <img src={palmerLeft} alt="Palmera izquierda" className="w-full h-full object-contain" />
       </div>
       <div
         ref={palmerRightRef}
-        className="absolute right-0 bottom-0 w-[40%] md:w-[28%] pointer-events-none parallax-float z-0"
+        className="absolute right-0 bottom-0 w-[36%] md:w-[22%] pointer-events-none parallax-float z-0"
         style={{ transform: `translateY(${palmerRightOffset}px)` }}
       >
         <img src={palmerRight} alt="Palmera derecha" className="w-full h-full object-contain" />

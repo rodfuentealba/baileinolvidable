@@ -22,7 +22,7 @@ const ProgramSection = () => {
   return (
     <section className="bg-program-bg py-16 px-6">
       <div ref={ref} className="fade-section max-w-4xl mx-auto">
-        <h2 className="font-serif-custom text-3xl md:text-4xl text-center text-foreground mb-10">
+        <h2 className="font-serif-custom text-3xl md:text-4xl text-center text-counter-bg mb-10">
           Programa
         </h2>
         <div className="stagger-children visible grid grid-cols-1 md:grid-cols-3 gap-6">
