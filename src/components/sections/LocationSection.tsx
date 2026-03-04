@@ -1,10 +1,14 @@
 import bgLocation from "@/assets/bgLocation.png";
 import moonCenter from "@/assets/moonCenter.png";
+import devilLeft from "@/assets/devilLeft.png";
+import devilRight from "@/assets/devilRight.png";
 import { useFadeInOnScroll, useParallax } from "@/hooks/useScrollAnimations";
 
 const LocationSection = () => {
   const ref = useFadeInOnScroll();
   const { ref: moonRef, offset: moonOffset } = useParallax(0.03);
+  const { ref: devilLeftRef, offset: devilLeftOffset } = useParallax(0.06);
+  const { ref: devilRightRef, offset: devilRightOffset } = useParallax(0.06);
 
   return (
     <section className="relative w-full bg-counter-bg z-10">
@@ -15,6 +19,24 @@ const LocationSection = () => {
         style={{ transform: `translateX(-50%) translateY(${moonOffset}px)` }}
       >
         <img src={moonCenter} alt="Luna" className="w-full h-full object-contain" />
+      </div>
+
+      {/* Devil Left parallax */}
+      <div
+        ref={devilLeftRef}
+        className="absolute left-[15%] bottom-[10%] w-[10%] md:w-[7%] pointer-events-none parallax-float z-20"
+        style={{ transform: `translateY(${devilLeftOffset}px)` }}
+      >
+        <img src={devilLeft} alt="Diablito izquierdo" className="w-full h-full object-contain" />
+      </div>
+
+      {/* Devil Right parallax */}
+      <div
+        ref={devilRightRef}
+        className="absolute right-[15%] bottom-[10%] w-[10%] md:w-[7%] pointer-events-none parallax-float z-20"
+        style={{ transform: `translateY(${devilRightOffset}px)` }}
+      >
+        <img src={devilRight} alt="Diablita derecha" className="w-full h-full object-contain" />
       </div>
 
       <div
