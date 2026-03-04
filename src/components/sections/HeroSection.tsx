@@ -5,8 +5,6 @@ import palmerLeft from "@/assets/palmerLeft.png";
 import palmerRight from "@/assets/palmerRight.png";
 import maskLeft from "@/assets/maskLeft.png";
 import maskRight from "@/assets/maskRight.png";
-import moonCenter from "@/assets/moonCenter.png";
-import partyCenter from "@/assets/partyCenter.png";
 import partyLeft from "@/assets/partyLeft.png";
 import partyRight from "@/assets/partyRight.png";
 import { useFadeInOnScroll, useParallax } from "@/hooks/useScrollAnimations";
