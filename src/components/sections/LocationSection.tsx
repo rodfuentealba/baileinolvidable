@@ -19,7 +19,7 @@ const LocationSection = () => {
 
       <div
         ref={ref}
-        className="fade-section relative w-full h-[400px] md:h-[500px] bg-cover bg-center flex items-end justify-center rounded-t-3xl overflow-hidden"
+        className="fade-section relative w-full h-[700px] bg-cover bg-center flex items-end justify-center rounded-t-3xl overflow-hidden"
         style={{ backgroundImage: `url(${bgLocation})` }}
       >
         <div className="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent" />
