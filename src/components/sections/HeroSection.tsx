@@ -53,26 +53,14 @@ const HeroSection = () => {
       <ParallaxElement
         src={humanLeft}
         alt="Persona izquierda"
-        className="left-[3%] bottom-[8%] w-[12%] md:w-[8%] z-20"
+        className="left-[15%] bottom-[8%] w-[12%] md:w-[8%] z-20"
         speed={0.06}
       />
       <ParallaxElement
         src={humanRight}
         alt="Persona derecha"
-        className="right-[3%] bottom-[8%] w-[10%] md:w-[7%] z-20"
+        className="right-[15%] bottom-[8%] w-[10%] md:w-[7%] z-20"
         speed={0.06}
-      />
-      <ParallaxElement
-        src={moonCenter}
-        alt="Luna"
-        className="left-1/2 -translate-x-1/2 top-[8%] w-[8%] md:w-[5%] z-10"
-        speed={0.02}
-      />
-      <ParallaxElement
-        src={partyCenter}
-        alt="Guirnalda central"
-        className="left-1/2 -translate-x-1/2 top-[18%] w-[30%] md:w-[22%] z-10"
-        speed={0.03}
       />
       <ParallaxElement
         src={maskLeft}
