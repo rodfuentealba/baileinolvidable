@@ -37,28 +37,28 @@ const HeroSection = () => {
       <ParallaxElement
         src={palmerLeft}
         alt="Palmera izquierda"
-        className="left-0 bottom-[10%] w-[20%] z-[60]"
+        className="left-0 bottom-[-20%] w-[20%] z-[60]"
         speed={0.04}
       />
       {/* 2. Palmera derecha */}
       <ParallaxElement
         src={palmerRight}
         alt="Palmera derecha"
-        className="right-0 bottom-[10%] w-[20%] z-[60]"
+        className="right-0 bottom-[-20%] w-[20%] z-[60]"
         speed={0.04}
       />
       {/* 3. Persona izquierda */}
       <ParallaxElement
         src={humanLeft}
         alt="Persona izquierda"
-        className="left-[15%] bottom-[8%] w-[12%] md:w-[8%] z-20"
+        className="left-[15%] bottom-[-30%] w-[10%] z-20"
         speed={0.06}
       />
       {/* 4. Persona derecha */}
       <ParallaxElement
         src={humanRight}
         alt="Persona derecha"
-        className="right-[15%] bottom-[8%] w-[10%] md:w-[7%] z-20"
+        className="right-[15%] bottom-[-30%] w-[10%] z-20"
         speed={0.06}
       />
       {/* 5. Máscara izquierda */}
@@ -85,18 +85,6 @@ const HeroSection = () => {
         />
       </div>
 
-      {/* Description overlay */}
-      <div className="bg-navbar-scroll py-12 md:py-16 text-center px-6">
-        <p className="font-display text-2xl md:text-3xl text-white mb-2">
-          Fiesta para celebrar nuestra unión
-        </p>
-        <h2 className="font-serif-custom text-2xl md:text-4xl mb-3 italic" style={{ color: '#FBB104' }}>
-          Casa Galzi en Galzignano Terme
-        </h2>
-        <p className="font-display text-lg md:text-xl text-white/80 max-w-lg mx-auto">
-          con nuestros amigos que son parte importante de nuestras vidas!
-        </p>
-      </div>
     </section>
   );
 };
