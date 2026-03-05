@@ -33,7 +33,7 @@ const LocationSection = () => {
       {/* Devil Right parallax */}
       <div
         ref={devilRightRef}
-        className="absolute right-[15%] top-[5%] w-[10%] pointer-events-none parallax-float z-20"
+        className="absolute right-[15%] top-[5%] w-[15%] pointer-events-none parallax-float z-20"
         style={{ transform: `translateY(${devilRightOffset}px)` }}
       >
         <img src={devilRight} alt="Diablita derecha" className="w-full h-full object-contain" />
