@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 
-export function useFadeInOnScroll() {
+export function useFadeInOnScroll(threshold = 0.15) {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -10,14 +10,15 @@ export function useFadeInOnScroll() {
       ([entry]) => {
         if (entry.isIntersecting) {
           el.classList.add("visible");
-          obs.unobserve(el);
+        } else {
+          el.classList.remove("visible");
         }
       },
-      { threshold: 0.15 }
+      { threshold }
     );
     obs.observe(el);
     return () => obs.disconnect();
-  }, []);
+  }, [threshold]);
 
   return ref;
 }

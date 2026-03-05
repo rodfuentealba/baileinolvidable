@@ -3,6 +3,8 @@ import { Tent, AlertTriangle, Bath, ShowerHead, Home } from "lucide-react";
 
 const ServicesSection = () => {
   const ref = useFadeInOnScroll();
+  const staggerRef = useFadeInOnScroll(0.1);
+  const facilityRef = useFadeInOnScroll(0.1);
 
   return (
     <section className="bg-program-bg py-16 px-6">
@@ -11,8 +13,7 @@ const ServicesSection = () => {
           <h2 className="font-display text-3xl md:text-4xl text-counter-bg">Servicios</h2>
         </div>
 
-        {/* Accommodation cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+        <div ref={staggerRef} className="stagger-children grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
           <div className="rounded-xl p-6 border border-counter-bg">
             <Tent className="w-8 h-8 text-counter-bg mb-3" />
             <h3 className="font-serif-custom text-xl text-foreground mb-2">Con carpa</h3>
@@ -32,8 +33,7 @@ const ServicesSection = () => {
           </div>
         </div>
 
-        {/* Facility cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div ref={facilityRef} className="stagger-children grid grid-cols-1 md:grid-cols-3 gap-6">
           {[
             { icon: Bath, label: "Baño Seco" },
             { icon: ShowerHead, label: "Duchas Exteriores" },

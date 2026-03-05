@@ -12,7 +12,7 @@ function calcTimeLeft() {
   return {
     meses: Math.floor(diff / (1000 * 60 * 60 * 24 * 30)),
     semanas: Math.floor(diff / (1000 * 60 * 60 * 24 * 7)),
-    horas: Math.floor(diff / (1000 * 60 * 60)),
+    dias: Math.floor(diff / (1000 * 60 * 60 * 24)),
   };
 }
 
@@ -40,9 +40,7 @@ const FlipDigit = ({ value, label }: { value: number; label: string }) => {
           {display}
         </span>
       </div>
-      <span className="font-display text-xl text-white/80">
-        {label}
-      </span>
+      <span className="font-display text-xl text-white/80">{label}</span>
     </div>
   );
 };
@@ -50,23 +48,23 @@ const FlipDigit = ({ value, label }: { value: number; label: string }) => {
 const CounterSection = () => {
   const [time, setTime] = useState(calcTimeLeft);
   const ref = useFadeInOnScroll();
+  const staggerRef = useFadeInOnScroll(0.1);
   const { ref: palmerLeftRef, offset: palmerLeftOffset } = useParallax(0.04);
   const { ref: palmerRightRef, offset: palmerRightOffset } = useParallax(0.04);
 
   useEffect(() => {
-    const id = setInterval(() => setTime(calcTimeLeft()), 1000);
+    const id = setInterval(() => setTime(calcTimeLeft()), 60000);
     return () => clearInterval(id);
   }, []);
 
   const items = [
     { value: time.meses, label: "Meses" },
     { value: time.semanas, label: "Semanas" },
-    { value: time.horas, label: "Horas" },
+    { value: time.dias, label: "Días" },
   ];
 
   return (
     <section className="relative bg-counter-bg py-16 px-6 overflow-hidden">
-      {/* Parallax palmeras */}
       <div
         ref={palmerLeftRef}
         className="absolute left-0 bottom-0 w-[36%] md:w-[24%] pointer-events-none parallax-float z-0"
@@ -88,7 +86,7 @@ const CounterSection = () => {
           alt="Baile Inolvidable"
           className="mx-auto w-full max-w-xs md:max-w-sm mb-10"
         />
-        <div className="stagger-children visible grid grid-cols-3 gap-6">
+        <div ref={staggerRef} className="stagger-children grid grid-cols-3 gap-6">
           {items.map((item, i) => (
             <FlipDigit key={i} value={item.value} label={item.label} />
           ))}
