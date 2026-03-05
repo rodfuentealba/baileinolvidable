@@ -14,7 +14,7 @@ const weatherIcons: Record<WeatherCondition, React.ComponentType<{ className?: s
   drizzle: CloudDrizzle,
 };
 
-const WeatherCard = ({ temp, label, condition, variant = "teal", loading }: { temp: number; label: string; condition: WeatherCondition; variant?: "teal" | "gold"; loading?: boolean }) => {
+const WeatherCard = ({ temp, label, condition, variant = "teal", loading }: { temp: string; label: string; condition: WeatherCondition; variant?: "teal" | "gold"; loading?: boolean }) => {
   const Icon = weatherIcons[condition] || Sun;
   const bgClass = variant === "gold" ? "bg-gold text-foreground" : "bg-teal text-hero-navy-foreground";
   return (
@@ -37,10 +37,9 @@ const WeatherCard = ({ temp, label, condition, variant = "teal", loading }: { te
 
 const DresscodeSection = () => {
   const ref = useFadeInOnScroll();
-  const [weather, setWeather] = useState<{
-    current: { temp: number; condition: WeatherCondition };
-    forecast: { temp: number; condition: WeatherCondition };
-  } | null>(null);
+  const staggerRef = useFadeInOnScroll(0.1);
+  const weatherRef = useFadeInOnScroll(0.1);
+  const [currentWeather, setCurrentWeather] = useState<{ temp: number; condition: WeatherCondition } | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -48,7 +47,7 @@ const DresscodeSection = () => {
       try {
         const { data, error } = await supabase.functions.invoke('get-weather');
         if (!error && data) {
-          setWeather(data);
+          setCurrentWeather(data.current);
         }
       } catch (e) {
         console.error('Error fetching weather:', e);
@@ -58,15 +57,12 @@ const DresscodeSection = () => {
     };
 
     fetchWeather();
-    // Refresh every 15 minutes
     const interval = setInterval(fetchWeather, 15 * 60 * 1000);
     return () => clearInterval(interval);
   }, []);
 
-  const currentTemp = weather?.current.temp ?? 0;
-  const currentCondition = weather?.current.condition ?? "cloudy";
-  const forecastTemp = weather?.forecast.temp ?? 0;
-  const forecastCondition = weather?.forecast.condition ?? "sunny";
+  const currentTemp = currentWeather?.temp?.toString() ?? "0";
+  const currentCondition = currentWeather?.condition ?? "cloudy";
 
   return (
     <section className="py-16 px-6 bg-black">
@@ -75,8 +71,7 @@ const DresscodeSection = () => {
           <h2 className="font-display text-3xl md:text-4xl text-gold">Dresscode</h2>
         </div>
 
-        {/* Tips cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+        <div ref={staggerRef} className="stagger-children grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
           <div className="rounded-xl p-6 border border-hero-navy-foreground/20">
             <TreePine className="w-8 h-8 text-teal-light mb-3" />
             <h3 className="font-serif-custom text-2xl text-teal-light mb-2">
@@ -97,20 +92,19 @@ const DresscodeSection = () => {
           </div>
         </div>
 
-        {/* Weather cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div ref={weatherRef} className="stagger-children grid grid-cols-1 md:grid-cols-2 gap-6">
           <WeatherCard
             temp={currentTemp}
             label="Temperatura Actual"
-            condition={currentCondition as WeatherCondition}
+            condition={currentCondition}
             loading={loading}
           />
           <WeatherCard
-            temp={forecastTemp}
+            temp="25-30"
             label="Temperatura Pronosticada"
-            condition={forecastCondition as WeatherCondition}
+            condition="sunny"
             variant="gold"
-            loading={loading}
+            loading={false}
           />
         </div>
       </div>
