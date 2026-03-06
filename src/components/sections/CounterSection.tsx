@@ -3,6 +3,7 @@ import letterCenter from "@/assets/letterCenter.svg";
 import palmerLeft from "@/assets/palmerLeft.png";
 import palmerRight from "@/assets/palmerRight.png";
 import { useFadeInOnScroll, useParallax } from "@/hooks/useScrollAnimations";
+import { useLanguage } from "@/hooks/useLanguage";
 
 const TARGET_DATE = new Date("2026-09-05T18:00:00+02:00").getTime();
 
@@ -51,6 +52,7 @@ const CounterSection = () => {
   const staggerRef = useFadeInOnScroll(0.1);
   const { ref: palmerLeftRef, offset: palmerLeftOffset } = useParallax(0.04);
   const { ref: palmerRightRef, offset: palmerRightOffset } = useParallax(0.04);
+  const { t } = useLanguage();
 
   useEffect(() => {
     const id = setInterval(() => setTime(calcTimeLeft()), 60000);
@@ -58,9 +60,9 @@ const CounterSection = () => {
   }, []);
 
   const items = [
-    { value: time.meses, label: "Meses" },
-    { value: time.semanas, label: "Semanas" },
-    { value: time.dias, label: "Días" },
+    { value: time.meses, label: t("counter.months") },
+    { value: time.semanas, label: t("counter.weeks") },
+    { value: time.dias, label: t("counter.days") },
   ];
 
   return (
