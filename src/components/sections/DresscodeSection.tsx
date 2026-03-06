@@ -1,4 +1,5 @@
 import { useFadeInOnScroll } from "@/hooks/useScrollAnimations";
+import { useLanguage } from "@/hooks/useLanguage";
 import { TreePine, Sun, Cloud, CloudRain, CloudSnow, CloudLightning, CloudDrizzle } from "lucide-react";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
@@ -41,6 +42,7 @@ const DresscodeSection = () => {
   const weatherRef = useFadeInOnScroll(0.1);
   const [currentWeather, setCurrentWeather] = useState<{ temp: number; condition: WeatherCondition } | null>(null);
   const [loading, setLoading] = useState(true);
+  const { t } = useLanguage();
 
   useEffect(() => {
     const fetchWeather = async () => {
@@ -68,26 +70,26 @@ const DresscodeSection = () => {
     <section className="py-16 px-6 bg-black">
       <div ref={ref} className="fade-section max-w-4xl mx-auto">
         <div className="flex flex-col items-center mb-10">
-          <h2 className="font-display text-3xl md:text-4xl text-gold">Dresscode</h2>
+          <h2 className="font-display text-3xl md:text-4xl text-gold">{t("dresscode.title")}</h2>
         </div>
 
         <div ref={staggerRef} className="stagger-children grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
           <div className="rounded-xl p-6 border border-hero-navy-foreground/20">
             <TreePine className="w-8 h-8 text-teal-light mb-3" />
             <h3 className="font-serif-custom text-2xl text-teal-light mb-2">
-              Medio de la naturaleza
+              {t("dresscode.nature.title")}
             </h3>
             <p className="text-hero-navy-foreground/70 text-sm font-body">
-              Toda la fiesta será sobre el pasto, por eso recomendamos no usar zapatos con taco o ropa delicada que pueda dañarse.
+              {t("dresscode.nature.text")}
             </p>
           </div>
           <div className="rounded-xl p-6 border border-hero-navy-foreground/20">
             <Sun className="w-8 h-8 text-gold mb-3" />
             <h3 className="font-serif-custom text-2xl text-gold mb-2">
-              Siempre al aire libre
+              {t("dresscode.outdoor.title")}
             </h3>
             <p className="text-hero-navy-foreground/70 text-sm font-body">
-              Durante el día hará calor, pero en la noche la temperatura baja, así que recomendamos llevar algo de abrigo por si acaso.
+              {t("dresscode.outdoor.text")}
             </p>
           </div>
         </div>
@@ -95,13 +97,13 @@ const DresscodeSection = () => {
         <div ref={weatherRef} className="stagger-children grid grid-cols-1 md:grid-cols-2 gap-6">
           <WeatherCard
             temp={currentTemp}
-            label="Temperatura Actual"
+            label={t("dresscode.current")}
             condition={currentCondition}
             loading={loading}
           />
           <WeatherCard
             temp="25-30"
-            label="Temperatura Pronosticada"
+            label={t("dresscode.forecast")}
             condition="sunny"
             variant="gold"
             loading={false}
