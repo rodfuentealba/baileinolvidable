@@ -5,13 +5,10 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "@/hooks/use-toast";
 import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogFooter,
+  Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter,
 } from "@/components/ui/dialog";
 import { Pencil, Save, Clock, Globe } from "lucide-react";
+import { defaultTranslations } from "@/hooks/useLanguage";
 
 interface SectionContent {
   id: string;
@@ -23,24 +20,27 @@ interface SectionContent {
 
 const SECTIONS = [
   { key: "description", label: "Descripción", fields: ["title", "subtitle", "text"] },
-  { key: "program", label: "Programa", fields: ["title", "01", "02", "03", "04", "05", "06"] },
   { key: "counter", label: "Contador", fields: ["months", "weeks", "days"] },
   { key: "location", label: "Ubicación", fields: ["title", "subtitle"] },
   { key: "dresscode", label: "Dresscode", fields: ["title", "nature_title", "nature_text", "outdoor_title", "outdoor_text", "current", "forecast"] },
-  { key: "services", label: "Servicios", fields: ["title", "tent_title", "tent_text", "tent_cta", "notent_title", "notent_text", "bathroom", "showers", "house"] },
-  { key: "destinations", label: "Destinos", fields: ["title", "flights", "about", "tips", "cta"] },
 ];
+
+// Maps section_key + field to a translation key in defaultTranslations
+const sectionFieldToTranslationKey: Record<string, Record<string, string>> = {
+  description: { title: "desc.title", subtitle: "desc.subtitle", text: "desc.text" },
+  counter: { months: "counter.months", weeks: "counter.weeks", days: "counter.days" },
+  location: { title: "location.title", subtitle: "location.subtitle" },
+  dresscode: {
+    title: "dresscode.title", nature_title: "dresscode.nature.title", nature_text: "dresscode.nature.text",
+    outdoor_title: "dresscode.outdoor.title", outdoor_text: "dresscode.outdoor.text",
+    current: "dresscode.current", forecast: "dresscode.forecast",
+  },
+};
 
 const fieldLabels: Record<string, string> = {
   title: "Título",
   subtitle: "Subtítulo",
   text: "Texto",
-  "01": "16:00 - Item 1",
-  "02": "17:00 - Item 2",
-  "03": "18:00 - Item 3",
-  "04": "19:30 - Item 4",
-  "05": "21:00 - Item 5",
-  "06": "22:30 - Item 6",
   months: "Meses",
   weeks: "Semanas",
   days: "Días",
@@ -50,18 +50,6 @@ const fieldLabels: Record<string, string> = {
   outdoor_text: "Texto Aire Libre",
   current: "Temperatura Actual (label)",
   forecast: "Temperatura Pronosticada (label)",
-  tent_title: "Título Carpa",
-  tent_text: "Texto Carpa",
-  tent_cta: "CTA Carpa",
-  notent_title: "Título Sin Carpa",
-  notent_text: "Texto Sin Carpa",
-  bathroom: "Baño",
-  showers: "Duchas",
-  house: "Casa",
-  flights: "Texto Vuelos",
-  about: "Texto 'a unos'",
-  tips: "Texto Consejos",
-  cta: "Botón CTA",
 };
 
 type EditLang = "es" | "it";
@@ -83,15 +71,10 @@ const SectionManagement = ({ userId }: { userId: string }) => {
       setSections(data as SectionContent[]);
       const userIds = [...new Set(data.filter(d => d.updated_by).map(d => d.updated_by))];
       if (userIds.length > 0) {
-        const { data: profileData } = await supabase
-          .from("profiles")
-          .select("id, full_name, email")
-          .in("id", userIds);
+        const { data: profileData } = await supabase.from("profiles").select("id, full_name, email").in("id", userIds);
         if (profileData) {
           const map: Record<string, string> = {};
-          profileData.forEach((p: any) => {
-            map[p.id] = p.full_name || p.email || "Desconocido";
-          });
+          profileData.forEach((p: any) => { map[p.id] = p.full_name || p.email || "Desconocido"; });
           setProfiles(map);
         }
       }
@@ -99,26 +82,32 @@ const SectionManagement = ({ userId }: { userId: string }) => {
     setLoading(false);
   };
 
-  useEffect(() => {
-    fetchSections();
-  }, []);
+  useEffect(() => { fetchSections(); }, []);
 
   const openEdit = (section: typeof SECTIONS[0]) => {
     setEditingSection(section);
     const existing = sections.find(s => s.section_key === section.key);
     const content = existing?.content as Record<string, any> || {};
-    
+
     const esValues: Record<string, string> = {};
     const itValues: Record<string, string> = {};
+    const translationMap = sectionFieldToTranslationKey[section.key] || {};
+
     section.fields.forEach(f => {
-      // Support both old format (flat strings) and new format ({ es, it })
       const val = content[f];
+      const translationKey = translationMap[f];
+      const defaultVal = translationKey ? defaultTranslations[translationKey] : null;
+
       if (typeof val === "object" && val !== null) {
         esValues[f] = val.es || "";
         itValues[f] = val.it || "";
-      } else {
-        esValues[f] = val || "";
+      } else if (val) {
+        esValues[f] = val;
         itValues[f] = "";
+      } else {
+        // Pre-fill with defaults from the website
+        esValues[f] = defaultVal?.es || "";
+        itValues[f] = defaultVal?.it || "";
       }
     });
     setFormEs(esValues);
@@ -131,7 +120,6 @@ const SectionManagement = ({ userId }: { userId: string }) => {
     if (!editingSection) return;
     setSaving(true);
 
-    // Build bilingual content
     const content: Record<string, { es: string; it: string }> = {};
     editingSection.fields.forEach(f => {
       content[f] = { es: formEs[f] || "", it: formIt[f] || "" };
@@ -140,28 +128,13 @@ const SectionManagement = ({ userId }: { userId: string }) => {
     const existing = sections.find(s => s.section_key === editingSection.key);
 
     if (existing) {
-      const { error } = await supabase
-        .from("site_content")
-        .update({ content, updated_by: userId })
-        .eq("id", existing.id);
-
-      if (error) {
-        toast({ title: "Error", description: error.message, variant: "destructive" });
-      } else {
-        toast({ title: "Sección actualizada" });
-      }
+      const { error } = await supabase.from("site_content").update({ content: content as any, updated_by: userId }).eq("id", existing.id);
+      if (error) toast({ title: "Error", description: error.message, variant: "destructive" });
+      else toast({ title: "Sección actualizada" });
     } else {
-      const { error } = await supabase.from("site_content").insert({
-        section_key: editingSection.key,
-        content,
-        updated_by: userId,
-      });
-
-      if (error) {
-        toast({ title: "Error", description: error.message, variant: "destructive" });
-      } else {
-        toast({ title: "Sección guardada" });
-      }
+      const { error } = await supabase.from("site_content").insert([{ section_key: editingSection.key, content: content as any, updated_by: userId }]);
+      if (error) toast({ title: "Error", description: error.message, variant: "destructive" });
+      else toast({ title: "Sección guardada" });
     }
 
     setSaving(false);
@@ -174,7 +147,6 @@ const SectionManagement = ({ userId }: { userId: string }) => {
 
   return (
     <div>
-      {/* Language indicator */}
       <div className="flex items-center gap-3 mb-6">
         <Globe className="w-4 h-4 text-muted-foreground" />
         <p className="text-muted-foreground font-body text-sm">
@@ -191,10 +163,7 @@ const SectionManagement = ({ userId }: { userId: string }) => {
             const updatedBy = existing?.updated_by ? profiles[existing.updated_by] : null;
 
             return (
-              <div
-                key={section.key}
-                className="flex items-center justify-between p-4 bg-card rounded-lg border border-border"
-              >
+              <div key={section.key} className="flex items-center justify-between p-4 bg-card rounded-lg border border-border">
                 <div>
                   <h3 className="font-body font-semibold text-foreground">{section.label}</h3>
                   {existing && (
@@ -217,33 +186,15 @@ const SectionManagement = ({ userId }: { userId: string }) => {
         </div>
       )}
 
-      {/* Edit Dialog */}
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
         <DialogContent className="max-w-lg max-h-[85vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle className="font-body">
-              Editar {editingSection?.label}
-            </DialogTitle>
+            <DialogTitle className="font-body">Editar {editingSection?.label}</DialogTitle>
           </DialogHeader>
 
-          {/* Language toggle */}
           <div className="flex gap-2 mb-2">
-            <Button
-              variant={editLang === "es" ? "default" : "outline"}
-              size="sm"
-              onClick={() => setEditLang("es")}
-              className="gap-1.5 font-body"
-            >
-              🇨🇱 Español
-            </Button>
-            <Button
-              variant={editLang === "it" ? "default" : "outline"}
-              size="sm"
-              onClick={() => setEditLang("it")}
-              className="gap-1.5 font-body"
-            >
-              🇮🇹 Italiano
-            </Button>
+            <Button variant={editLang === "es" ? "default" : "outline"} size="sm" onClick={() => setEditLang("es")} className="gap-1.5 font-body">🇨🇱 Español</Button>
+            <Button variant={editLang === "it" ? "default" : "outline"} size="sm" onClick={() => setEditLang("it")} className="gap-1.5 font-body">🇮🇹 Italiano</Button>
           </div>
 
           <div className="space-y-4">
@@ -268,14 +219,8 @@ const SectionManagement = ({ userId }: { userId: string }) => {
             ))}
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setDialogOpen(false)}>
-              Cancelar
-            </Button>
-            <Button
-              onClick={handleSave}
-              disabled={saving}
-              className="bg-counter-bg hover:bg-counter-bg/90 text-hero-navy-foreground font-body gap-2"
-            >
+            <Button variant="outline" onClick={() => setDialogOpen(false)}>Cancelar</Button>
+            <Button onClick={handleSave} disabled={saving} className="bg-counter-bg hover:bg-counter-bg/90 text-hero-navy-foreground font-body gap-2">
               <Save className="w-4 h-4" />
               {saving ? "Guardando..." : "Guardar ambos idiomas"}
             </Button>

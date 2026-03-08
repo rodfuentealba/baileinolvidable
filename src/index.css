@@ -55,6 +55,8 @@
     --program-bg: 18 100% 93%;
     --program-card: 7 89% 59%;
     --counter-bg: 7 89% 59%;
+    --status-confirmed: 145 65% 40%;
+    --status-pending: 30 85% 50%;
 
     --font-display: 'Shadows Into Light', cursive;
     --font-serif: 'Shadows Into Light', cursive;

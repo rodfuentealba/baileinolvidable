@@ -6,7 +6,7 @@ interface Translations {
   [key: string]: { es: string; it: string };
 }
 
-const defaultTranslations: Translations = {
+export const defaultTranslations: Translations = {
   // Description section
   "desc.title": { es: "Fiesta para celebrar nuestra unión", it: "Festa per celebrare la nostra unione" },
   "desc.subtitle": { es: "Casa Galzi en Galzignano Terme", it: "Casa Galzi a Galzignano Terme" },

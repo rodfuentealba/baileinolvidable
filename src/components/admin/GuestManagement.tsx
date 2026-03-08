@@ -191,11 +191,11 @@ const GuestManagement = ({ userId }: { userId: string }) => {
         </div>
         <div className="bg-card rounded-lg p-4">
           <p className="text-sm text-muted-foreground font-body">Confirmados</p>
-          <p className="text-3xl font-bold font-body text-teal">{confirmedCount}</p>
+          <p className="text-3xl font-bold font-body text-status-confirmed">{confirmedCount}</p>
         </div>
         <div className="bg-card rounded-lg p-4">
           <p className="text-sm text-muted-foreground font-body">Pendientes</p>
-          <p className="text-3xl font-bold font-body text-gold">{pendingCount}</p>
+          <p className="text-3xl font-bold font-body text-status-pending">{pendingCount}</p>
         </div>
       </div>
 
@@ -256,8 +256,8 @@ const GuestManagement = ({ userId }: { userId: string }) => {
                     <span
                       className={`inline-block px-2 py-1 rounded-full text-xs font-semibold ${
                         g.attendance === "confirmado"
-                          ? "bg-teal/20 text-teal"
-                          : "bg-gold/20 text-accent-foreground"
+                          ? "bg-status-confirmed/20 text-status-confirmed"
+                          : "bg-status-pending/20 text-status-pending"
                       }`}
                     >
                       {g.attendance === "confirmado" ? "Confirmado" : "Pendiente"}

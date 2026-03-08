@@ -71,6 +71,9 @@ export default {
         "program-bg": "hsl(var(--program-bg))",
         "program-card": "hsl(var(--program-card))",
         "counter-bg": "hsl(var(--counter-bg))",
+        "status-confirmed": "hsl(var(--status-confirmed))",
+        "status-pending": "hsl(var(--status-pending))",
+        "counter-bg": "hsl(var(--counter-bg))",
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",
