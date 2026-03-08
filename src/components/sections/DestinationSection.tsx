@@ -40,7 +40,7 @@ const DestinationSection = () => {
                 loading="lazy"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-foreground/80 via-foreground/20 to-transparent" />
-              <div className="absolute top-3 left-3 bg-destination-red text-hero-navy-foreground text-xs font-body font-semibold px-3 py-1 rounded-full">
+              <div className="absolute top-3 left-3 bg-destination-green text-hero-navy-foreground text-xs font-body font-semibold px-3 py-1 rounded-full">
                 {t("dest.flights")} {d.flightCost}
               </div>
               <div className="absolute bottom-4 left-4 right-4">

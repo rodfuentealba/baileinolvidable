@@ -65,7 +65,7 @@ export default {
         "location-dark": "hsl(var(--location-dark))",
         "dresscode-bg": "hsl(var(--dresscode-bg))",
         "services-bg": "hsl(var(--services-bg))",
-        "destination-red": "hsl(var(--destination-red))",
+        "destination-green": "hsl(var(--destination-green))",
         "footer-red": "hsl(var(--footer-red))",
         "navbar-scroll": "hsl(var(--navbar-scroll))",
         "program-bg": "hsl(var(--program-bg))",
