@@ -1,22 +1,60 @@
+import { useState, useEffect } from "react";
+import { supabase } from "@/integrations/supabase/client";
 import { useFadeInOnScroll } from "@/hooks/useScrollAnimations";
 import { useLanguage } from "@/hooks/useLanguage";
+import { Button } from "@/components/ui/button";
 import destVenezia from "@/assets/dest-venezia.jpg";
 import destNapoli from "@/assets/dest-napoli.jpg";
 import destDolomiti from "@/assets/dest-dolomiti.jpg";
 import destBologna from "@/assets/dest-bologna.jpg";
-import { Button } from "@/components/ui/button";
 
-const destinations = [
-  { name: "Venezia", image: destVenezia, distance: "50 KM", flightCost: "30-40 USD", tag: "🚣 Paseos en góndola", link: "https://www.tripadvisor.com/Tourism-g187870-Venice_Veneto-Vacations.html" },
-  { name: "Napoli", image: destNapoli, distance: "500 KM", flightCost: "30-40 USD", tag: "⚽ Fútbol & Pizza", link: "https://www.tripadvisor.com/Tourism-g187785-Naples_Province_of_Naples_Campania-Vacations.html" },
-  { name: "Dolomiti", image: destDolomiti, distance: "150 KM", flightCost: "20-30 USD", tag: "🧗 Escalada & Trekking", link: "https://www.tripadvisor.com/Tourism-g187849-Dolomites_Trentino_Alto_Adige-Vacations.html" },
-  { name: "Bologna", image: destBologna, distance: "120 KM", flightCost: "15-25 USD", tag: "🍝 Gastronomía", link: "https://www.tripadvisor.com/Tourism-g187801-Bologna_Province_of_Bologna_Emilia_Romagna-Vacations.html" },
+interface DestinationItem {
+  id: string;
+  name: string;
+  image_url: string;
+  price: string;
+  distance: string;
+  category: string;
+  category_color: string;
+  link: string;
+  tag: { es: string; it: string };
+}
+
+// Map default image paths to imported assets
+const imageMap: Record<string, string> = {
+  "/src/assets/dest-venezia.jpg": destVenezia,
+  "/src/assets/dest-napoli.jpg": destNapoli,
+  "/src/assets/dest-dolomiti.jpg": destDolomiti,
+  "/src/assets/dest-bologna.jpg": destBologna,
+};
+
+const DEFAULT_DESTINATIONS: DestinationItem[] = [
+  { id: "1", name: "Venezia", image_url: "/src/assets/dest-venezia.jpg", price: "30-40 USD", distance: "50 KM", category: "🚣 Paseos en góndola", category_color: "hsl(145 60% 42%)", link: "https://www.tripadvisor.com/Tourism-g187870-Venice_Veneto-Vacations.html", tag: { es: "🚣 Paseos en góndola", it: "🚣 Giri in gondola" } },
+  { id: "2", name: "Napoli", image_url: "/src/assets/dest-napoli.jpg", price: "30-40 USD", distance: "500 KM", category: "⚽ Fútbol & Pizza", category_color: "hsl(200 70% 45%)", link: "https://www.tripadvisor.com/Tourism-g187785-Naples_Province_of_Naples_Campania-Vacations.html", tag: { es: "⚽ Fútbol & Pizza", it: "⚽ Calcio & Pizza" } },
+  { id: "3", name: "Dolomiti", image_url: "/src/assets/dest-dolomiti.jpg", price: "20-30 USD", distance: "150 KM", category: "🧗 Escalada & Trekking", category_color: "hsl(42 95% 63%)", link: "https://www.tripadvisor.com/Tourism-g187849-Dolomites_Trentino_Alto_Adige-Vacations.html", tag: { es: "🧗 Escalada & Trekking", it: "🧗 Arrampicata & Trekking" } },
+  { id: "4", name: "Bologna", image_url: "/src/assets/dest-bologna.jpg", price: "15-25 USD", distance: "120 KM", category: "🍝 Gastronomía", category_color: "hsl(280 60% 55%)", link: "https://www.tripadvisor.com/Tourism-g187801-Bologna_Province_of_Bologna_Emilia_Romagna-Vacations.html", tag: { es: "🍝 Gastronomía", it: "🍝 Gastronomia" } },
 ];
 
 const DestinationSection = () => {
   const ref = useFadeInOnScroll();
   const staggerRef = useFadeInOnScroll(0.1);
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
+  const [destinations, setDestinations] = useState<DestinationItem[]>(DEFAULT_DESTINATIONS);
+
+  useEffect(() => {
+    supabase
+      .from("site_content")
+      .select("content")
+      .eq("section_key", "destinations_list")
+      .single()
+      .then(({ data }) => {
+        if (data?.content && Array.isArray(data.content)) {
+          setDestinations(data.content as unknown as DestinationItem[]);
+        }
+      });
+  }, []);
+
+  const getImageSrc = (url: string) => imageMap[url] || url;
 
   return (
     <section className="bg-program-bg py-16 px-6">
@@ -25,27 +63,30 @@ const DestinationSection = () => {
           {t("dest.title")}
         </h2>
         <div ref={staggerRef} className="stagger-children grid grid-cols-1 md:grid-cols-2 gap-6">
-          {destinations.map((d, i) => (
+          {destinations.map((d) => (
             <a
-              key={i}
+              key={d.id}
               href={d.link}
               target="_blank"
               rel="noopener noreferrer"
               className="relative overflow-hidden rounded-xl h-64 group block cursor-pointer"
             >
               <img
-                src={d.image}
+                src={getImageSrc(d.image_url)}
                 alt={d.name}
                 className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                 loading="lazy"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-foreground/80 via-foreground/20 to-transparent" />
-              <div className="absolute top-3 left-3 bg-destination-green text-hero-navy-foreground text-xs font-body font-semibold px-3 py-1 rounded-full">
-                {t("dest.flights")} {d.flightCost}
+              <div
+                className="absolute top-3 left-3 text-hero-navy-foreground text-xs font-body font-semibold px-3 py-1 rounded-full"
+                style={{ backgroundColor: "hsl(145 60% 42%)" }}
+              >
+                {t("dest.flights")} {d.price}
               </div>
               <div className="absolute bottom-4 left-4 right-4">
                 <p className="text-hero-navy-foreground/80 text-xs font-body mb-1">
-                  {t("dest.about")} {d.distance} · {d.tag}
+                  {t("dest.about")} {d.distance} · {d.tag[lang]}
                 </p>
                 <h3 className="font-display text-4xl text-hero-navy-foreground">
                   {d.name}
