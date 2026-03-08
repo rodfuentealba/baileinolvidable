@@ -67,12 +67,12 @@ const ProgramManagement = ({ userId }: { userId: string }) => {
       .eq("section_key", "programs_list")
       .single();
 
-    const content = newItems as unknown as Record<string, unknown>;
+    const content = JSON.parse(JSON.stringify(newItems));
 
     if (existing) {
       await supabase.from("site_content").update({ content, updated_by: userId }).eq("id", existing.id);
     } else {
-      await supabase.from("site_content").insert({ section_key: "programs_list", content, updated_by: userId });
+      await supabase.from("site_content").insert([{ section_key: "programs_list", content, updated_by: userId }]);
     }
   };
 
