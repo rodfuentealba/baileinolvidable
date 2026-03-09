@@ -100,7 +100,7 @@ const Navbar = () => {
             <Link to="/admin/dashboard">
               <Avatar className="h-9 w-9 bg-hero-navy border-2 border-hero-navy-foreground/20 hover:border-hero-navy-foreground/40 transition-colors cursor-pointer">
                 <AvatarFallback className="bg-hero-navy text-hero-navy-foreground font-body font-bold text-sm">
-                  RF
+                  {adminInitials || "AD"}
                 </AvatarFallback>
               </Avatar>
             </Link>
