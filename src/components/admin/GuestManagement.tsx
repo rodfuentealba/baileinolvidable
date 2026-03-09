@@ -3,6 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "@/hooks/use-toast";
+import { Badge } from "@/components/ui/badge";
 import {
   Dialog,
   DialogContent,
@@ -27,7 +28,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Plus, Pencil, Trash2, Search } from "lucide-react";
+import { Plus, Pencil, Trash2, Search, X } from "lucide-react";
 
 interface Guest {
   id: string;
@@ -46,7 +47,7 @@ interface GuestForm {
   first_name: string;
   last_name: string;
   country: string;
-  food_intolerance: string;
+  food_intolerances: string[];
   attendance: string;
   arrival_date: string;
 }
@@ -55,7 +56,7 @@ const emptyForm: GuestForm = {
   first_name: "",
   last_name: "",
   country: "",
-  food_intolerance: "",
+  food_intolerances: [],
   attendance: "pendiente",
   arrival_date: "",
 };
