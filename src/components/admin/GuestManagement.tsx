@@ -342,11 +342,62 @@ const GuestManagement = ({ userId }: { userId: string }) => {
               value={form.country}
               onChange={(e) => setForm({ ...form, country: e.target.value })}
             />
-            <Input
-              placeholder="Intolerancia Alimenticia"
-              value={form.food_intolerance}
-              onChange={(e) => setForm({ ...form, food_intolerance: e.target.value })}
-            />
+            <div className="space-y-2">
+              <p className="text-sm text-muted-foreground">Intolerancias Alimenticias</p>
+              {form.food_intolerances.length > 0 && (
+                <div className="flex flex-wrap gap-1.5">
+                  {form.food_intolerances.map((intolerance) => (
+                    <Badge
+                      key={intolerance}
+                      variant="secondary"
+                      className="gap-1 cursor-pointer hover:bg-destructive/20"
+                      onClick={() => removeIntolerance(intolerance)}
+                    >
+                      {intolerance}
+                      <X className="w-3 h-3" />
+                    </Badge>
+                  ))}
+                </div>
+              )}
+              {existingIntolerances.filter((i) => !form.food_intolerances.includes(i)).length > 0 && (
+                <div className="flex flex-wrap gap-1.5">
+                  {existingIntolerances
+                    .filter((i) => !form.food_intolerances.includes(i))
+                    .map((intolerance) => (
+                      <Badge
+                        key={intolerance}
+                        variant="outline"
+                        className="cursor-pointer hover:bg-primary/10"
+                        onClick={() => addIntolerance(intolerance)}
+                      >
+                        + {intolerance}
+                      </Badge>
+                    ))}
+                </div>
+              )}
+              <div className="flex gap-2">
+                <Input
+                  placeholder="Nueva intolerancia..."
+                  value={newIntolerance}
+                  onChange={(e) => setNewIntolerance(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      e.preventDefault();
+                      addIntolerance(newIntolerance);
+                    }
+                  }}
+                />
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="icon"
+                  onClick={() => addIntolerance(newIntolerance)}
+                  disabled={!newIntolerance.trim()}
+                >
+                  <Plus className="w-4 h-4" />
+                </Button>
+              </div>
+            </div>
             <Select value={form.attendance} onValueChange={(v) => setForm({ ...form, attendance: v })}>
               <SelectTrigger>
                 <SelectValue />
