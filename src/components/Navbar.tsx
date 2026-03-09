@@ -9,6 +9,7 @@ const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const { lang, toggleLang } = useLanguage();
   const [isAdmin, setIsAdmin] = useState(false);
+  const [adminInitials, setAdminInitials] = useState("");
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -25,7 +26,28 @@ const Navbar = () => {
           _user_id: session.user.id,
           _role: "admin",
         });
-        setIsAdmin(!!data);
+        const isUserAdmin = !!data;
+        setIsAdmin(isUserAdmin);
+        
+        if (isUserAdmin) {
+          // Fetch profile to get full_name
+          const { data: profileData } = await supabase
+            .from("profiles")
+            .select("full_name")
+            .eq("id", session.user.id)
+            .single();
+          
+          if (profileData?.full_name) {
+            const initials = profileData.full_name
+              .split(" ")
+              .map((word: string) => word.charAt(0).toUpperCase())
+              .join("")
+              .slice(0, 2);
+            setAdminInitials(initials);
+          } else {
+            setAdminInitials("AD");
+          }
+        }
       }
     };
     checkAdmin();
@@ -36,9 +58,30 @@ const Navbar = () => {
           _user_id: session.user.id,
           _role: "admin",
         });
-        setIsAdmin(!!data);
+        const isUserAdmin = !!data;
+        setIsAdmin(isUserAdmin);
+        
+        if (isUserAdmin) {
+          const { data: profileData } = await supabase
+            .from("profiles")
+            .select("full_name")
+            .eq("id", session.user.id)
+            .single();
+          
+          if (profileData?.full_name) {
+            const initials = profileData.full_name
+              .split(" ")
+              .map((word: string) => word.charAt(0).toUpperCase())
+              .join("")
+              .slice(0, 2);
+            setAdminInitials(initials);
+          } else {
+            setAdminInitials("AD");
+          }
+        }
       } else {
         setIsAdmin(false);
+        setAdminInitials("");
       }
     });
 
@@ -57,7 +100,7 @@ const Navbar = () => {
             <Link to="/admin/dashboard">
               <Avatar className="h-9 w-9 bg-hero-navy border-2 border-hero-navy-foreground/20 hover:border-hero-navy-foreground/40 transition-colors cursor-pointer">
                 <AvatarFallback className="bg-hero-navy text-hero-navy-foreground font-body font-bold text-sm">
-                  RF
+                  {adminInitials || "AD"}
                 </AvatarFallback>
               </Avatar>
             </Link>
