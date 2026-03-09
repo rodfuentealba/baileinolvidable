@@ -110,14 +110,18 @@ const GuestManagement = ({ userId }: { userId: string }) => {
 
   const openEdit = (guest: Guest) => {
     setEditingGuest(guest);
+    const intolerances = guest.food_intolerance
+      ? guest.food_intolerance.split(",").map((i) => i.trim()).filter(Boolean)
+      : [];
     setForm({
       first_name: guest.first_name,
       last_name: guest.last_name,
       country: guest.country,
-      food_intolerance: guest.food_intolerance || "",
+      food_intolerances: intolerances,
       attendance: guest.attendance,
       arrival_date: guest.arrival_date || "",
     });
+    setNewIntolerance("");
     setDialogOpen(true);
   };
 
