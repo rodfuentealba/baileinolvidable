@@ -77,8 +77,7 @@ const MusicPlayer = () => {
           )}
         </button>
 
-        {hasInteracted && (
-          <button
+        <button
             onClick={toggleMute}
             className="w-8 h-8 rounded-full flex items-center justify-center text-hero-navy-foreground/60 hover:text-hero-navy-foreground transition-colors"
             aria-label={isMuted ? "Activar sonido" : "Silenciar"}
