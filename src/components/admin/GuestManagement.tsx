@@ -130,6 +130,21 @@ const GuestManagement = ({ userId }: { userId: string }) => {
     setDeleteDialogOpen(true);
   };
 
+  const addIntolerance = (intolerance: string) => {
+    const trimmed = intolerance.trim();
+    if (trimmed && !form.food_intolerances.includes(trimmed)) {
+      setForm({ ...form, food_intolerances: [...form.food_intolerances, trimmed] });
+    }
+    setNewIntolerance("");
+  };
+
+  const removeIntolerance = (intolerance: string) => {
+    setForm({
+      ...form,
+      food_intolerances: form.food_intolerances.filter((i) => i !== intolerance),
+    });
+  };
+
   const handleSave = async () => {
     if (!form.first_name.trim() || !form.last_name.trim()) {
       toast({ title: "Error", description: "Nombre y apellido son obligatorios.", variant: "destructive" });
@@ -141,7 +156,7 @@ const GuestManagement = ({ userId }: { userId: string }) => {
       first_name: form.first_name.trim(),
       last_name: form.last_name.trim(),
       country: form.country.trim(),
-      food_intolerance: form.food_intolerance.trim(),
+      food_intolerance: form.food_intolerances.join(", "),
       attendance: form.attendance,
       arrival_date: form.arrival_date || null,
       updated_by: userId,
