@@ -9,6 +9,7 @@ const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const { lang, toggleLang } = useLanguage();
   const [isAdmin, setIsAdmin] = useState(false);
+  const [adminInitials, setAdminInitials] = useState("");
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
