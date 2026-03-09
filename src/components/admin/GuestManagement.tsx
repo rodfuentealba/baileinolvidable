@@ -3,6 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "@/hooks/use-toast";
+import { Badge } from "@/components/ui/badge";
 import {
   Dialog,
   DialogContent,
@@ -27,7 +28,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Plus, Pencil, Trash2, Search } from "lucide-react";
+import { Plus, Pencil, Trash2, Search, X } from "lucide-react";
 
 interface Guest {
   id: string;
@@ -46,7 +47,7 @@ interface GuestForm {
   first_name: string;
   last_name: string;
   country: string;
-  food_intolerance: string;
+  food_intolerances: string[];
   attendance: string;
   arrival_date: string;
 }
@@ -55,7 +56,7 @@ const emptyForm: GuestForm = {
   first_name: "",
   last_name: "",
   country: "",
-  food_intolerance: "",
+  food_intolerances: [],
   attendance: "pendiente",
   arrival_date: "",
 };
@@ -71,6 +72,8 @@ const GuestManagement = ({ userId }: { userId: string }) => {
   const [saving, setSaving] = useState(false);
   const [search, setSearch] = useState("");
   const [filterAttendance, setFilterAttendance] = useState<string>("all");
+  const [existingIntolerances, setExistingIntolerances] = useState<string[]>([]);
+  const [newIntolerance, setNewIntolerance] = useState("");
 
   const fetchGuests = async () => {
     const { data, error } = await supabase
@@ -80,6 +83,17 @@ const GuestManagement = ({ userId }: { userId: string }) => {
 
     if (!error && data) {
       setGuests(data as Guest[]);
+      // Extract unique intolerances
+      const intolerances = new Set<string>();
+      data.forEach((g) => {
+        if (g.food_intolerance) {
+          g.food_intolerance.split(",").forEach((i: string) => {
+            const trimmed = i.trim();
+            if (trimmed) intolerances.add(trimmed);
+          });
+        }
+      });
+      setExistingIntolerances(Array.from(intolerances).sort());
     }
     setLoading(false);
   };
@@ -96,20 +110,39 @@ const GuestManagement = ({ userId }: { userId: string }) => {
 
   const openEdit = (guest: Guest) => {
     setEditingGuest(guest);
+    const intolerances = guest.food_intolerance
+      ? guest.food_intolerance.split(",").map((i) => i.trim()).filter(Boolean)
+      : [];
     setForm({
       first_name: guest.first_name,
       last_name: guest.last_name,
       country: guest.country,
-      food_intolerance: guest.food_intolerance || "",
+      food_intolerances: intolerances,
       attendance: guest.attendance,
       arrival_date: guest.arrival_date || "",
     });
+    setNewIntolerance("");
     setDialogOpen(true);
   };
 
   const openDelete = (guest: Guest) => {
     setDeletingGuest(guest);
     setDeleteDialogOpen(true);
+  };
+
+  const addIntolerance = (intolerance: string) => {
+    const trimmed = intolerance.trim();
+    if (trimmed && !form.food_intolerances.includes(trimmed)) {
+      setForm({ ...form, food_intolerances: [...form.food_intolerances, trimmed] });
+    }
+    setNewIntolerance("");
+  };
+
+  const removeIntolerance = (intolerance: string) => {
+    setForm({
+      ...form,
+      food_intolerances: form.food_intolerances.filter((i) => i !== intolerance),
+    });
   };
 
   const handleSave = async () => {
@@ -123,7 +156,7 @@ const GuestManagement = ({ userId }: { userId: string }) => {
       first_name: form.first_name.trim(),
       last_name: form.last_name.trim(),
       country: form.country.trim(),
-      food_intolerance: form.food_intolerance.trim(),
+      food_intolerance: form.food_intolerances.join(", "),
       attendance: form.attendance,
       arrival_date: form.arrival_date || null,
       updated_by: userId,
@@ -309,11 +342,62 @@ const GuestManagement = ({ userId }: { userId: string }) => {
               value={form.country}
               onChange={(e) => setForm({ ...form, country: e.target.value })}
             />
-            <Input
-              placeholder="Intolerancia Alimenticia"
-              value={form.food_intolerance}
-              onChange={(e) => setForm({ ...form, food_intolerance: e.target.value })}
-            />
+            <div className="space-y-2">
+              <p className="text-sm text-muted-foreground">Intolerancias Alimenticias</p>
+              {form.food_intolerances.length > 0 && (
+                <div className="flex flex-wrap gap-1.5">
+                  {form.food_intolerances.map((intolerance) => (
+                    <Badge
+                      key={intolerance}
+                      variant="secondary"
+                      className="gap-1 cursor-pointer hover:bg-destructive/20"
+                      onClick={() => removeIntolerance(intolerance)}
+                    >
+                      {intolerance}
+                      <X className="w-3 h-3" />
+                    </Badge>
+                  ))}
+                </div>
+              )}
+              {existingIntolerances.filter((i) => !form.food_intolerances.includes(i)).length > 0 && (
+                <div className="flex flex-wrap gap-1.5">
+                  {existingIntolerances
+                    .filter((i) => !form.food_intolerances.includes(i))
+                    .map((intolerance) => (
+                      <Badge
+                        key={intolerance}
+                        variant="outline"
+                        className="cursor-pointer hover:bg-primary/10"
+                        onClick={() => addIntolerance(intolerance)}
+                      >
+                        + {intolerance}
+                      </Badge>
+                    ))}
+                </div>
+              )}
+              <div className="flex gap-2">
+                <Input
+                  placeholder="Nueva intolerancia..."
+                  value={newIntolerance}
+                  onChange={(e) => setNewIntolerance(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      e.preventDefault();
+                      addIntolerance(newIntolerance);
+                    }
+                  }}
+                />
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="icon"
+                  onClick={() => addIntolerance(newIntolerance)}
+                  disabled={!newIntolerance.trim()}
+                >
+                  <Plus className="w-4 h-4" />
+                </Button>
+              </div>
+            </div>
             <Select value={form.attendance} onValueChange={(v) => setForm({ ...form, attendance: v })}>
               <SelectTrigger>
                 <SelectValue />

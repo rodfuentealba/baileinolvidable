@@ -1,16 +1,48 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import titleDB from "@/assets/titleDB.svg";
 import { useLanguage } from "@/hooks/useLanguage";
+import { supabase } from "@/integrations/supabase/client";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const { lang, toggleLang } = useLanguage();
+  const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
     window.addEventListener("scroll", onScroll, { passive: true });
     onScroll();
     return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  useEffect(() => {
+    const checkAdmin = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session?.user) {
+        const { data } = await supabase.rpc("has_role", {
+          _user_id: session.user.id,
+          _role: "admin",
+        });
+        setIsAdmin(!!data);
+      }
+    };
+    checkAdmin();
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+      if (session?.user) {
+        const { data } = await supabase.rpc("has_role", {
+          _user_id: session.user.id,
+          _role: "admin",
+        });
+        setIsAdmin(!!data);
+      } else {
+        setIsAdmin(false);
+      }
+    });
+
+    return () => subscription.unsubscribe();
   }, []);
 
   return (
@@ -20,7 +52,17 @@ const Navbar = () => {
       }`}
     >
       <div className="flex items-center justify-between py-4 px-6">
-        <div className="w-16" />
+        <div className="w-16">
+          {isAdmin && (
+            <Link to="/admin/dashboard">
+              <Avatar className="h-9 w-9 bg-hero-navy border-2 border-hero-navy-foreground/20 hover:border-hero-navy-foreground/40 transition-colors cursor-pointer">
+                <AvatarFallback className="bg-hero-navy text-hero-navy-foreground font-body font-bold text-sm">
+                  RF
+                </AvatarFallback>
+              </Avatar>
+            </Link>
+          )}
+        </div>
         <img src={titleDB} alt="Damiam & Benedetta" className="h-6 md:h-8" />
         <button
           onClick={toggleLang}
