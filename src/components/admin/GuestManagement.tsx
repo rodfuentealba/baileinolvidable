@@ -72,6 +72,8 @@ const GuestManagement = ({ userId }: { userId: string }) => {
   const [saving, setSaving] = useState(false);
   const [search, setSearch] = useState("");
   const [filterAttendance, setFilterAttendance] = useState<string>("all");
+  const [existingIntolerances, setExistingIntolerances] = useState<string[]>([]);
+  const [newIntolerance, setNewIntolerance] = useState("");
 
   const fetchGuests = async () => {
     const { data, error } = await supabase
@@ -81,6 +83,17 @@ const GuestManagement = ({ userId }: { userId: string }) => {
 
     if (!error && data) {
       setGuests(data as Guest[]);
+      // Extract unique intolerances
+      const intolerances = new Set<string>();
+      data.forEach((g) => {
+        if (g.food_intolerance) {
+          g.food_intolerance.split(",").forEach((i: string) => {
+            const trimmed = i.trim();
+            if (trimmed) intolerances.add(trimmed);
+          });
+        }
+      });
+      setExistingIntolerances(Array.from(intolerances).sort());
     }
     setLoading(false);
   };
