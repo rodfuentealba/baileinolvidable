@@ -41,14 +41,6 @@ const MusicPlayer = () => {
 
   const togglePlay = () => {
     if (!playerRef.current) return;
-
-    if (!hasInteracted) {
-      setHasInteracted(true);
-      playerRef.current.playVideo();
-      setIsPlaying(true);
-      return;
-    }
-
     if (isPlaying) {
       playerRef.current.pauseVideo();
       setIsPlaying(false);
