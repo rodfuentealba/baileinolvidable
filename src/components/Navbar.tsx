@@ -26,7 +26,28 @@ const Navbar = () => {
           _user_id: session.user.id,
           _role: "admin",
         });
-        setIsAdmin(!!data);
+        const isUserAdmin = !!data;
+        setIsAdmin(isUserAdmin);
+        
+        if (isUserAdmin) {
+          // Fetch profile to get full_name
+          const { data: profileData } = await supabase
+            .from("profiles")
+            .select("full_name")
+            .eq("id", session.user.id)
+            .single();
+          
+          if (profileData?.full_name) {
+            const initials = profileData.full_name
+              .split(" ")
+              .map((word: string) => word.charAt(0).toUpperCase())
+              .join("")
+              .slice(0, 2);
+            setAdminInitials(initials);
+          } else {
+            setAdminInitials("AD");
+          }
+        }
       }
     };
     checkAdmin();
@@ -37,9 +58,30 @@ const Navbar = () => {
           _user_id: session.user.id,
           _role: "admin",
         });
-        setIsAdmin(!!data);
+        const isUserAdmin = !!data;
+        setIsAdmin(isUserAdmin);
+        
+        if (isUserAdmin) {
+          const { data: profileData } = await supabase
+            .from("profiles")
+            .select("full_name")
+            .eq("id", session.user.id)
+            .single();
+          
+          if (profileData?.full_name) {
+            const initials = profileData.full_name
+              .split(" ")
+              .map((word: string) => word.charAt(0).toUpperCase())
+              .join("")
+              .slice(0, 2);
+            setAdminInitials(initials);
+          } else {
+            setAdminInitials("AD");
+          }
+        }
       } else {
         setIsAdmin(false);
+        setAdminInitials("");
       }
     });
 
