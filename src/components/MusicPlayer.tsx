@@ -1,7 +1,33 @@
 import { useState, useRef, useEffect } from "react";
 import { Play, Pause, Volume2, VolumeX } from "lucide-react";
 
-const YOUTUBE_VIDEO_ID = "K43qc-mTgYc";
+const YOUTUBE_URL =
+  "https://www.youtube.com/watch?v=TXlUkDvwVd8&list=RDTXlUkDvwVd8&start_radio=1";
+
+const getYouTubeVideoId = (urlOrId: string) => {
+  // Accept either a raw 11-char ID or a full YouTube URL
+  if (/^[a-zA-Z0-9_-]{11}$/.test(urlOrId)) return urlOrId;
+
+  try {
+    const url = new URL(urlOrId);
+
+    // https://youtu.be/<id>
+    if (url.hostname.includes("youtu.be")) {
+      const id = url.pathname.replace("/", "").slice(0, 11);
+      return id || urlOrId;
+    }
+
+    // https://www.youtube.com/watch?v=<id>
+    const v = url.searchParams.get("v");
+    if (v && /^[a-zA-Z0-9_-]{11}$/.test(v)) return v;
+
+    return urlOrId;
+  } catch {
+    return urlOrId;
+  }
+};
+
+const YOUTUBE_VIDEO_ID = getYouTubeVideoId(YOUTUBE_URL);
 
 const MusicPlayer = () => {
   const [isPlaying, setIsPlaying] = useState(true);
