@@ -63,12 +63,7 @@ const MusicPlayer = () => {
   return (
     <>
       <div id="yt-player" className="hidden" />
-      <div className="fixed bottom-4 right-4 z-[100] flex items-center gap-2 bg-hero-navy/90 backdrop-blur-md rounded-full px-4 py-2.5 shadow-lg border border-hero-navy-foreground/10">
-        {!hasInteracted && (
-          <span className="text-hero-navy-foreground/60 text-xs font-body mr-1 hidden md:inline">
-            ♪ Escuchar música
-          </span>
-        )}
+      <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-[100] flex items-center gap-2 bg-hero-navy/90 backdrop-blur-md rounded-full px-4 py-2.5 shadow-lg border border-hero-navy-foreground/10">
 
         <button
           onClick={togglePlay}
