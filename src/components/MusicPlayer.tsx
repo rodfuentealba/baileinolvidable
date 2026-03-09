@@ -88,7 +88,6 @@ const MusicPlayer = () => {
               <Volume2 className="w-4 h-4" />
             )}
           </button>
-        )}
 
         {isPlaying && (
           <div className="flex items-end gap-[3px] h-4 ml-1">
