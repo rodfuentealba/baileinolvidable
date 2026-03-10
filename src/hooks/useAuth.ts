@@ -1,46 +1,67 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
+import type { User } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
 
 export function useAuth() {
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<User | null>(null);
   const [isAdmin, setIsAdmin] = useState(false);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
-      const currentUser = session?.user ?? null;
+    let isMounted = true;
+
+    const resolveAuthState = async (currentUser: User | null) => {
+      if (!isMounted) return;
+
       setUser(currentUser);
 
-      if (currentUser) {
-        // Check admin role
-        const { data } = await supabase.rpc('has_role', {
-          _user_id: currentUser.id,
-          _role: 'admin'
-        });
-        setIsAdmin(!!data);
-      } else {
+      if (!currentUser) {
         setIsAdmin(false);
+        setLoading(false);
+        return;
       }
-      setLoading(false);
-    });
 
-    supabase.auth.getSession().then(async ({ data: { session } }) => {
-      const currentUser = session?.user ?? null;
-      setUser(currentUser);
-
-      if (currentUser) {
-        const { data } = await supabase.rpc('has_role', {
+      try {
+        const { data, error } = await supabase.rpc("has_role", {
           _user_id: currentUser.id,
-          _role: 'admin'
+          _role: "admin",
         });
-        setIsAdmin(!!data);
+
+        if (error) {
+          throw error;
+        }
+
+        if (!isMounted) return;
+        setIsAdmin(Boolean(data));
+      } catch (error) {
+        console.error("Error checking admin role", error);
+        if (!isMounted) return;
+        setIsAdmin(false);
+      } finally {
+        if (isMounted) {
+          setLoading(false);
+        }
       }
-      setLoading(false);
+    };
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      window.setTimeout(() => {
+        void resolveAuthState(session?.user ?? null);
+      }, 0);
     });
 
-    return () => subscription.unsubscribe();
+    void supabase.auth.getSession().then(({ data: { session } }) => {
+      void resolveAuthState(session?.user ?? null);
+    });
+
+    return () => {
+      isMounted = false;
+      subscription.unsubscribe();
+    };
   }, []);
 
   const signIn = async (email: string, password: string) => {
@@ -52,15 +73,14 @@ export function useAuth() {
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
-      options: { data: { full_name: fullName } }
+      options: { data: { full_name: fullName } },
     });
 
     if (!error && data.user) {
-      // Create profile
-      await supabase.from('profiles').insert({
+      await supabase.from("profiles").insert({
         id: data.user.id,
         email,
-        full_name: fullName
+        full_name: fullName,
       });
     }
 
