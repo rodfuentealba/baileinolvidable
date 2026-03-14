@@ -7,7 +7,7 @@ const FooterSection = () => {
 
   return (
     <footer className="bg-footer-red py-12 px-6 text-center">
-      <HeartHandshake className="w-10 h-10 mx-auto mb-4" color="#ffffff"/>
+      <HeartHandshake className="w-10 h-10 mx-auto mb-4 text-amber-400"/>
       <img src={titleDB} alt="Damiam & Benedetta" className="h-6 mx-auto opacity-90" />
       <p className="text-hero-navy-foreground/60 text-sm font-body mt-4">
         {t("footer.date")}
