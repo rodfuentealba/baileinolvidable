@@ -5,6 +5,12 @@ import { Input } from "@/components/ui/input";
 import { toast } from "@/hooks/use-toast";
 import { Badge } from "@/components/ui/badge";
 import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import {
   Dialog,
   DialogContent,
   DialogHeader,
@@ -214,6 +220,57 @@ const GuestManagement = ({ userId }: { userId: string }) => {
   const confirmedCount = guests.filter((g) => g.attendance === "confirmado").length;
   const pendingCount = guests.filter((g) => g.attendance === "pendiente").length;
 
+  const INTOLERANCE_COLORS = [
+  "bg-red-100 text-red-700",
+  "bg-orange-100 text-orange-700",
+  "bg-amber-100 text-amber-700",
+  "bg-yellow-100 text-yellow-700",
+  "bg-lime-100 text-lime-700",
+  "bg-green-100 text-green-700",
+  "bg-teal-100 text-teal-700",
+  "bg-cyan-100 text-cyan-700",
+  "bg-blue-100 text-blue-700",
+  "bg-indigo-100 text-indigo-700",
+  "bg-violet-100 text-violet-700",
+  "bg-purple-100 text-purple-700",
+  "bg-fuchsia-100 text-fuchsia-700",
+  "bg-pink-100 text-pink-700",
+  "bg-rose-100 text-rose-700",
+  "bg-stone-100 text-stone-700",
+];
+
+const getIntoleranceColor = (intolerance: string) => {
+  let hash = 0;
+  for (let i = 0; i < intolerance.length; i++) {
+    hash = intolerance.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  return INTOLERANCE_COLORS[Math.abs(hash) % INTOLERANCE_COLORS.length];
+};
+
+const countryToEmoji = (country: string) => {
+  const countries: Record<string, string> = {
+    "Chile": "🇨🇱",
+    "Italia": "🇮🇹",
+    "Argentina": "🇦🇷",
+    "España": "🇪🇸",
+    "Francia": "🇫🇷",
+    "Alemania": "🇩🇪",
+    "Brasil": "🇧🇷",
+    "México": "🇲🇽",
+    "Colombia": "🇨🇴",
+    "Perú": "🇵🇪",
+    "Uruguay": "🇺🇾",
+    "Estados Unidos": "🇺🇸",
+    "Reino Unido": "🇬🇧",
+    "Portugal": "🇵🇹",
+    "Japón": "🇯🇵",
+    "China": "🇨🇳",
+    "Australia": "🇦🇺",
+    "Canadá": "🇨🇦",
+  };
+  return countries[country] || "🌍";
+};
+
   return (
     <div>
       {/* Stats */}
@@ -283,8 +340,34 @@ const GuestManagement = ({ userId }: { userId: string }) => {
                   <td className="px-4 py-3 text-foreground font-medium">
                     {g.first_name} {g.last_name}
                   </td>
-                  <td className="px-4 py-3 text-muted-foreground hidden md:table-cell">{g.country}</td>
-                  <td className="px-4 py-3 text-muted-foreground hidden md:table-cell">{g.food_intolerance || "—"}</td>
+                  <td className="px-4 py-3 hidden md:table-cell">
+                    {g.country ? (
+                      <TooltipProvider>
+                        <Tooltip>
+                          <TooltipTrigger>
+                            <span className="text-2xl">{countryToEmoji(g.country)}</span>
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p>{g.country}</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                    ) : "—"}
+                  </td>
+                  <td className="px-4 py-3 hidden md:table-cell">
+                    {g.food_intolerance ? (
+                      <div className="flex flex-wrap gap-1">
+                        {g.food_intolerance.split(",").map((i) => i.trim()).filter(Boolean).map((intolerance) => (
+                          <span
+                            key={intolerance}
+                            className={`inline-block px-2 py-0.5 rounded-full text-xs font-semibold ${getIntoleranceColor(intolerance)}`}
+                          >
+                            {intolerance}
+                          </span>
+                        ))}
+                      </div>
+                    ) : "—"}
+                  </td>
                   <td className="px-4 py-3">
                     <span
                       className={`inline-block px-2 py-1 rounded-full text-xs font-semibold ${
