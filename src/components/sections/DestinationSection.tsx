@@ -3,10 +3,6 @@ import { supabase } from "@/integrations/supabase/client";
 import { useFadeInOnScroll } from "@/hooks/useScrollAnimations";
 import { useLanguage } from "@/hooks/useLanguage";
 import { Button } from "@/components/ui/button";
-import destVenezia from "@/assets/dest-venezia.jpg";
-import destNapoli from "@/assets/dest-napoli.jpg";
-import destDolomiti from "@/assets/dest-dolomiti.jpg";
-import destBologna from "@/assets/dest-bologna.jpg";
 
 interface DestinationItem {
   id: string;
@@ -20,13 +16,6 @@ interface DestinationItem {
   tag: { es: string; it: string };
 }
 
-// Map default image paths to imported assets
-const imageMap: Record<string, string> = {
-  "/src/assets/dest-venezia.jpg": destVenezia,
-  "/src/assets/dest-napoli.jpg": destNapoli,
-  "/src/assets/dest-dolomiti.jpg": destDolomiti,
-  "/src/assets/dest-bologna.jpg": destBologna,
-};
 
 const DEFAULT_DESTINATIONS: DestinationItem[] = [
   { id: "1", name: "Venezia", image_url: "/src/assets/dest-venezia.jpg", price: "30-40 USD", distance: "50 KM", category: "🚣 Paseos en góndola", category_color: "hsl(145 60% 42%)", link: "https://www.tripadvisor.com/Tourism-g187870-Venice_Veneto-Vacations.html", tag: { es: "🚣 Paseos en góndola", it: "🚣 Giri in gondola" } },
@@ -41,20 +30,20 @@ const DestinationSection = () => {
   const { t, lang } = useLanguage();
   const [destinations, setDestinations] = useState<DestinationItem[]>(DEFAULT_DESTINATIONS);
 
-  useEffect(() => {
+useEffect(() => {
     supabase
       .from("site_content")
       .select("content")
       .eq("section_key", "destinations_list")
       .single()
-      .then(({ data }) => {
+      .then(({ data, error }) => {
+        console.log('data:', data);
+        console.log('error:', error);
         if (data?.content && Array.isArray(data.content)) {
           setDestinations(data.content as unknown as DestinationItem[]);
         }
       });
   }, []);
-
-  const getImageSrc = (url: string) => imageMap[url] || url;
 
   return (
     <section className="bg-program-bg py-16 px-6">
@@ -72,7 +61,7 @@ const DestinationSection = () => {
               className="relative overflow-hidden rounded-xl h-64 group block cursor-pointer"
             >
               <img
-                src={getImageSrc(d.image_url)}
+                src={d.image_url}
                 alt={d.name}
                 className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                 loading="lazy"
