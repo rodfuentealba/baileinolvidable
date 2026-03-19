@@ -28,21 +28,44 @@ const DestinationSection = () => {
   const ref = useFadeInOnScroll();
   const staggerRef = useFadeInOnScroll(0.1);
   const { t, lang } = useLanguage();
-  const [destinations, setDestinations] = useState<DestinationItem[]>(DEFAULT_DESTINATIONS);
+  const [destinations, setDestinations] = useState<DestinationItem[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-useEffect(() => {
-    supabase
-      .from("site_content")
-      .select("content")
-      .eq("section_key", "destinations_list")
-      .single()
-      .then(({ data, error }) => {
-        console.log('data:', data);
-        console.log('error:', error);
-        if (data?.content && Array.isArray(data.content)) {
+  useEffect(() => {
+    let isMounted = true;
+
+    const fetchDestinations = async () => {
+      try {
+        const { data, error } = await supabase
+          .from("site_content")
+          .select("content")
+          .eq("section_key", "destinations_list")
+          .single();
+
+        if (!isMounted) return;
+
+        if (error) {
+          console.warn("Supabase error fetching destinations:", error);
+          setDestinations([]);
+        } else if (data?.content && Array.isArray(data.content) && data.content.length > 0) {
           setDestinations(data.content as unknown as DestinationItem[]);
+        } else {
+          setDestinations([]);
         }
-      });
+      } catch (err) {
+        console.error("Error fetching destinations:", err);
+        if (!isMounted) return;
+        setDestinations([]);
+      } finally {
+        if (isMounted) setIsLoading(false);
+      }
+    };
+
+    void fetchDestinations();
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   return (
@@ -52,14 +75,23 @@ useEffect(() => {
           {t("dest.title")}
         </h2>
         <div ref={staggerRef} className="stagger-children grid grid-cols-1 md:grid-cols-2 gap-6">
-          {destinations.map((d) => (
-            <a
-              key={d.id}
-              href={d.link}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="relative overflow-hidden rounded-xl h-64 group block cursor-pointer"
-            >
+          {isLoading ? (
+            <div className="col-span-1 md:col-span-2 text-center py-10 text-sm text-muted-foreground">
+              {t("dest.loading") || "Cargando destinos..."}
+            </div>
+          ) : destinations.length === 0 ? (
+            <div className="col-span-1 md:col-span-2 text-center py-10 text-sm text-muted-foreground">
+              {t("dest.empty") || "No hay destinos disponibles."}
+            </div>
+          ) : (
+            destinations.map((d) => (
+              <a
+                key={d.id}
+                href={d.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="relative overflow-hidden rounded-xl h-64 group block cursor-pointer"
+              >
               <img
                 src={d.image_url}
                 alt={d.name}
@@ -82,7 +114,7 @@ useEffect(() => {
                 </h3>
               </div>
             </a>
-          ))}
+            )))}
         </div>
 
         <div className="text-center mt-10">
