@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { Analytics } from "@vercel/analytics/next"
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/sections/HeroSection";
 import DescriptionSection from "@/components/sections/DescriptionSection";
@@ -32,7 +31,6 @@ const Index = () => {
         <FooterSection />
       </main>
       {!loading && <MusicPlayer />}
-      <Analytics />
     </>
   );
 };
