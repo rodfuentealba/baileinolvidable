@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Analytics } from "@vercel/analytics/next"
+import { Analytics } from "@vercel/analytics/react"
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/sections/HeroSection";
 import DescriptionSection from "@/components/sections/DescriptionSection";
