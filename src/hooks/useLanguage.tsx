@@ -52,6 +52,8 @@ export const defaultTranslations: Translations = {
 
   // Destinations section
   "dest.title": { es: "Destinos Cercanos", it: "Destinazioni Vicine" },
+  "dest.loading": { es: "Cargando destinos...", it: "Caricamento destinazioni..." },
+  "dest.empty": { es: "No hay destinos disponibles.", it: "Nessuna destinazione disponibile." },
   "dest.flights": { es: "Vuelos entre", it: "Voli tra" },
   "dest.about": { es: "a unos", it: "a circa" },
   "dest.tips": { es: "Para obtener consejos sobre su viaje a Italia haga clic aquí", it: "Per ottenere consigli sul vostro viaggio in Italia cliccate qui" },

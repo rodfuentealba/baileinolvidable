@@ -46,11 +46,11 @@ const DestinationSection = () => {
 
         if (error) {
           console.warn("Supabase error fetching destinations:", error);
-          setDestinations([]);
+          setDestinations(DEFAULT_DESTINATIONS);
         } else if (data?.content && Array.isArray(data.content) && data.content.length > 0) {
           setDestinations(data.content as unknown as DestinationItem[]);
         } else {
-          setDestinations([]);
+          setDestinations(DEFAULT_DESTINATIONS);
         }
       } catch (err) {
         console.error("Error fetching destinations:", err);
